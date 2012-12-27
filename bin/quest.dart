@@ -125,13 +125,13 @@ void _loop(num _) {
     row++;
   }
 
-  //player.draw(drw);
   Image playerImage = player.getDrawImage();
   int playerX = player.x;
   int playerY = player.y;
 
-  int vOffsetX = playerX - (640 ~/ 2);
-  int vOffsetY = playerY - (480 ~/ 2);
+  int vOffsetX = playerX + 64 - (mgr.width ~/ 2);
+  int vOffsetY = playerY + 64 - (mgr.height ~/ 2);
+
   v.setOffset(vOffsetX, vOffsetY);
 
   v.drawImage(playerImage, playerX, playerY, 64, 64);
@@ -156,7 +156,7 @@ void main() {
 
   drw.setBackground('black');
 
-  v = new Viewport(drw, 640, 480);
+  v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
 
   assets = new AssetManager(start);
 
