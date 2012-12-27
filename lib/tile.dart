@@ -1,6 +1,6 @@
 library tile;
 
-import 'package:quest/image.dart';
+import 'package:quest/assets.dart';
 
 class Tile {
 
