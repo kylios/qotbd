@@ -2,7 +2,7 @@ part of game_data;
 
 class Hero extends Player {
 
-  Hero(AssetManager assets) :
+  Hero(AssetManager assets, int x, int y) :
 
     super(2, 3,
         new ImageList([
@@ -49,5 +49,6 @@ class Hero extends Player {
           assets.getImage('p_right9')
         ]))
   {
+    this.setPosition(x, y);
   }
 }

@@ -1,0 +1,7 @@
+{
+	"name": "Castle",
+	"regions":[
+		"main_courtyard"
+	],
+	"starting_region": "main_courtyard"
+}

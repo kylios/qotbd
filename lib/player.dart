@@ -39,6 +39,8 @@ class Player implements KeyboardListener {
 
   int get speed => this._speed;
 
+  int get direction => this._direction;
+
   void setPosition(x, y) {
     this._x = x;
     this._y = y;

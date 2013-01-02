@@ -9,86 +9,43 @@ import 'package:quest/player.dart';
 import 'package:quest/image_list.dart';
 import 'package:quest/game_data.dart';
 import 'package:quest/viewport.dart';
+import 'package:quest/game_object.dart';
+import 'package:quest/level.dart';
 
 Page p;
 AssetManager assets;
 Viewport v;
 Hero player;
+GameObjectManager objects;
+Map game;
+Level currentLevel;
+Map<String, Level> gameLevels;
+Region currentRegion;
 
-Map<String, String> imageURIMap = {
-  'p_up1': 'img/player/up1.png',
-  'p_up2': 'img/player/up2.png',
-  'p_up3': 'img/player/up3.png',
-  'p_up4': 'img/player/up4.png',
-  'p_up5': 'img/player/up5.png',
-  'p_up6': 'img/player/up6.png',
-  'p_up7': 'img/player/up7.png',
-  'p_up8': 'img/player/up8.png',
-  'p_up9': 'img/player/up9.png',
-  'p_down1': 'img/player/down1.png',
-  'p_down2': 'img/player/down2.png',
-  'p_down3': 'img/player/down3.png',
-  'p_down4': 'img/player/down4.png',
-  'p_down5': 'img/player/down5.png',
-  'p_down6': 'img/player/down6.png',
-  'p_down7': 'img/player/down7.png',
-  'p_down8': 'img/player/down8.png',
-  'p_down9': 'img/player/down9.png',
-  'p_left1': 'img/player/left1.png',
-  'p_left2': 'img/player/left2.png',
-  'p_left3': 'img/player/left3.png',
-  'p_left4': 'img/player/left4.png',
-  'p_left5': 'img/player/left5.png',
-  'p_left6': 'img/player/left6.png',
-  'p_left7': 'img/player/left7.png',
-  'p_left8': 'img/player/left8.png',
-  'p_left9': 'img/player/left9.png',
-  'p_right1': 'img/player/right1.png',
-  'p_right2': 'img/player/right2.png',
-  'p_right3': 'img/player/right3.png',
-  'p_right4': 'img/player/right4.png',
-  'p_right5': 'img/player/right5.png',
-  'p_right6': 'img/player/right6.png',
-  'p_right7': 'img/player/right7.png',
-  'p_right8': 'img/player/right8.png',
-  'p_right9': 'img/player/right9.png',
-  'cfstl': 'img/castle_floor_top_left.png',
-  'cfstr': 'img/castle_floor_top_right.png',
-  'cfstc': 'img/castle_floor_top_center.png',
-  'cfscl': 'img/castle_floor_center_left.png',
-  'cfscr': 'img/castle_floor_center_right.png',
-  'cfscc': 'img/castle_floor_center_center.png',
-  'cfsbl': 'img/castle_floor_bottom_left.png',
-  'cfsbr': 'img/castle_floor_bottom_right.png',
-  'cfsbc': 'img/castle_floor_bottom_center.png',
-  'cfdbl': 'img/castle_floor_dot_bottom_left.png',
-  'cfdbr': 'img/castle_floor_dot_bottom_right.png',
-  'cfdtl': 'img/castle_floor_dot_top_left.png',
-  'cfdtr': 'img/castle_floor_dot_top_right.png'
-};
+Map<String, String> imageURIMap = null;
 
 List<List<String>> level =
 [
-  ['cfstl', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfscl', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscr'],
-  ['cfscl', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscr'],
-  ['cfsbl', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbr']
+  ['gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc'],
+  ['gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc'],
+  [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  [null, 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstr', null],
+  [null, 'cfscl', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
+  [null, 'cfscl', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscr', null],
+  [null, 'cfsbl', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbr', null],
+  [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
 ];
 
 
@@ -107,23 +64,66 @@ void _loop(num _) {
 
   player.tick();
 
+  // Collision detection
+  for (GameObject o in objects.blockingObjects) {
+
+    int oX1 = o.x;
+    int oX2 = o.x + o.width;
+    int oY1 = o.y;
+    int oY2 = o.y + o.height;
+
+    int pX1 = player.x;
+    int pX2 = player.x + 64;
+    int pY1 = player.y;
+    int pY2 = player.y + 64;
+
+    int pX1_old = pX1 - player.moveX * player.speed;
+    int pX2_old = pX2 - player.moveX * player.speed;
+    int pY1_old = pY1 - player.moveY * player.speed;
+    int pY2_old = pY2 - player.moveY * player.speed;
+
+    bool zeroX = false;
+    bool zeroY = false;
+    bool corrected = false;
+
+    if (player.moveX < 0 && pX1 <= oX2 && pX1_old > oX2 &&
+        ((pY1 <= oY2 && pY1 >= oY1) || (pY2 <= oY2 && pY2 >= oY1)) &&
+        ((pY1_old <= oY2 && pY1_old >= oY1) || (pY2_old <= oY2 && pY2_old >= oY1))) {
+      zeroX = true;
+    } else if (player.moveX > 0 && pX2 >= oX1 && pX2_old < oX1 &&
+        ((pY1 <= oY2 && pY1 >= oY1) || (pY2 <= oY2 && pY2 >= oY1)) &&
+        ((pY1_old <= oY2 && pY1_old >= oY1) || (pY2_old <= oY2 && pY2_old >= oY1))) {
+      zeroX = true;
+    }
+    if (player.moveY < 0 && pY1 <= oY2 && pY1_old > oY2 &&
+        ((pX1 <= oX2 && pX1 >= oX1) || (pX2 <= oX2 && pX2 >= oX1)) &&
+        ((pX1_old <= oX2 && pX1_old >= oX1) || (pX2_old <= oX2 && pX2_old >= oX1))) {
+      zeroY = true;
+    } else if (player.moveY > 0 && pY2 >= oY1 && pY2_old < oY1 &&
+        ((pX1 <= oX2 && pX1 >= oX1) || (pX2 <= oX2 && pX2 >= oX1)) &&
+        ((pX1_old <= oX2 && pX1_old >= oX1) || (pX2_old <= oX2 && pX2_old >= oX1))) {
+      zeroY = true;
+    }
+
+    if (zeroX) {
+      player.setPosition(pX1_old, player.y);
+      window.console.log("zero X: oX=${oX1},oY=${oY1}, pX=${pX1},pY=${pY1}");
+    }
+    if (zeroY) {
+      player.setPosition(player.x, pY1_old);
+      window.console.log("zero Y: oX=${oX1},oY=${oY1}, pX=${pX1},pY=${pY1}");
+    }
+
+    if (zeroX || zeroY) {
+      //break;
+    }
+  }
+
   // draw
   CanvasDrawer drw = p.canvasDrawer;
   CanvasManager mgr = p.canvasManager;
 
   drw.clear(mgr);
-
-  int row = 0;
-  int col = 0;
-  for (List<String> levelRow in level) {
-    col = 0;
-    for (String imgKey in levelRow) {
-      Tile t = new Tile(assets.getImage(imgKey));
-      v.drawImage(t.image, 64 * col, 64 * row, 64, 64);
-      col++;
-    }
-    row++;
-  }
 
   Image playerImage = player.getDrawImage();
   int playerX = player.x;
@@ -134,10 +134,33 @@ void _loop(num _) {
 
   v.setOffset(vOffsetX, vOffsetY);
 
+  int row = 0;
+  int col = 0;
+  for (List<String> levelRow in currentRegion.tiles) {
+    col = 0;
+    for (String imgKey in levelRow) {
+      if (imgKey != null) {
+        Tile t = new Tile(assets.getImage(imgKey));
+        v.drawImage(t.image, 64 * col, 64 * row, 64, 64);
+      }
+      col++;
+    }
+    row++;
+  }
+
+
+
   v.drawImage(playerImage, playerX, playerY, 64, 64);
+
+  for (GameObject o in currentRegion.staticObjects /* objects */) {
+    if (o != null) {
+      v.drawImage(o.image, o.x, o.y, o.width, o.height);
+    }
+  }
 
   window.requestAnimationFrame(_loop);
 }
+
 
 
 void start() {
@@ -147,6 +170,87 @@ void start() {
   _loop(0);
 
 }
+
+void levelLoaded(Level l) {
+  window.console.log("Level loaded");
+  currentRegion = l.currentRegion;
+
+}
+
+void gameLoaded() {
+
+  // Fetch the data
+  game = assets.getJson('game').data;
+  imageURIMap = assets.getJson('imageURIMap').data;
+
+  // Set new callback to fire when new assets are loaded
+  assets.setLoadCallback(start);
+
+  // Load images
+  for (String imgKey in imageURIMap.keys) {
+    String uri = imageURIMap[imgKey];
+    assets.addImage(imgKey, uri);
+  }
+
+  // Load level file
+  gameLevels = new Map<String, Level>();
+  for (String levelName in game['levels']) {
+    gameLevels[levelName] = null;
+  }
+
+  gameLevels[game['levels'][0]] = new Level(assets, game['levels'][0], levelLoaded);
+
+  objects = new GameObjectManager();
+  objects.newLayer();
+  for (int i = 1; i < 19; i++) {
+    if (i < 5 || i > 7) {
+      objects.add(new CastleWallRoofCenterStandard(assets, 64 * i, 0));
+      objects.add(new CastleWallTopCenterStandard(assets, 64 * i, 64));
+      objects.add(new GenericObject(assets.getImage(
+          (i == 2 || i == 14 ? 'cwbcc' : 'cwscc')),
+          64 * i, 128, 64, 64, true));
+      objects.add(new CastleWallBottomCenterStandard(assets, 64 * i, 172));
+    }
+
+  }
+  objects.add(new GenericObject(assets.getImage('cwabl'),
+      64 * 5, 172, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwacl'),
+      64 * 5, 128, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwatl'),
+      64 * 5, 64, 64, 64, true));
+
+  objects.newLayer();
+  objects.add(new GenericObject(assets.getImage('cwftc'),
+      64 * 5, 0, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwfbl'),
+      64 * 4, 172, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwfc1l'),
+      64 * 4, 128, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwfc2l'),
+      64 * 4, 64, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwftl'),
+      64 * 4, 0, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwftc'),
+      64 * 6, 0, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwatc'),
+      64 * 6, 64, 64, 64, false));
+  objects.add(new GenericObject(assets.getImage('cwacc'),
+      64 * 6, 128, 64, 64, false));
+  objects.add(new GenericObject(assets.getImage('cwatr'),
+      64 * 7, 64, 64, 64, false));
+  objects.add(new GenericObject(assets.getImage('cwacr'),
+      64 * 7, 128, 64, 64, true));
+  objects.add(new GenericObject(assets.getImage('cwabr'),
+      64 * 7, 172, 64, 64, true));
+
+  player = new Hero(assets, 640 ~/ 2 - 32, 256);
+
+  p.addKeyboardListener(player);
+  window.console.log('loading all assets');
+  assets.load();
+}
+
 
 void main() {
 
@@ -158,20 +262,11 @@ void main() {
 
   v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
 
-  assets = new AssetManager(start);
+  assets = new AssetManager(gameLoaded);
 
-  for (String imgKey in imageURIMap.keys) {
-    String uri = imageURIMap[imgKey];
-    assets.addAsset(imgKey, uri);
-  }
-
-
-
-  player = new Hero(assets);
-
-  p.addKeyboardListener(player);
-  window.console.log('loading all assets');
+  // Load the image uri map
+  assets.addJsonData('game', 'game_data/quest/game.json');
+  assets.addJsonData('imageURIMap', 'game_data/quest/image_uri_map.json');
   assets.load();
-
 
 }

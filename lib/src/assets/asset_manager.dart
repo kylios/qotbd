@@ -22,12 +22,14 @@ class AssetManager {
   // Handle assets to be loaded
   List<_LoadRequest> _loadQueue;
   Map<String, Image> _images;
+  Map<String, JsonData> _json;
 
   // Called when _loading is true and the _loadQueue is empty
   var _loadedCallback = null;
 
   AssetManager([this._loadedCallback = null]) {
     this._images = new Map<String, Image>();
+    this._json = new Map<String, JsonData>();
     this._loadQueue = new List<_LoadRequest>();
   }
 
@@ -35,10 +37,16 @@ class AssetManager {
     this._loadedCallback = loadedCallback;
   }
 
-  void addAsset(String imgKey, String uri) {
+  void addImage(String imgKey, String uri) {
 
     this._pendingLoads++;
     this._images[imgKey] = new Image(uri, this._imageLoadCallback);
+  }
+
+  void addJsonData(String jsonKey, String uri) {
+
+    this._pendingLoads++;
+    this._json[jsonKey] = new JsonData(uri, this._jsonLoadCallback);
   }
 
   void load() {
@@ -54,7 +62,6 @@ class AssetManager {
 
   void _imageLoadCallback(Image i) {
 
-    window.console.log("imageLoadCallback: ${i.img.src}");
     this._pendingLoads--;
     if (this._pendingLoads == 0 && this._loading) {
       this._loading = false;
@@ -66,6 +73,19 @@ class AssetManager {
     }
   }
 
+  void _jsonLoadCallback(JsonData j) {
+
+    this._pendingLoads--;
+    if (this._pendingLoads == 0 && this._loading) {
+      this._loading = false;
+
+      if (this._loadedCallback != null) {
+        this._loadedCallback();
+      }
+    }
+  }
+
   Image getImage(String imgKey) => this._images[imgKey];
+  JsonData getJson(String jsonKey) => this._json[jsonKey];
 
 }

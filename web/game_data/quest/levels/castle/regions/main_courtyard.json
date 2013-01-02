@@ -1,0 +1,53 @@
+{
+	"tiles": [
+		["gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc"],
+		["gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc"],
+		[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+		[null, "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstr", null],
+		[null, "cfscl", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
+		[null, "cfscl", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscr", null],
+		[null, "cfsbl", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbc", "cfsbr", null],
+		[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+	],
+	"static_objects": [
+		[
+			[ "cwsrc", 0, 0, 64, 64, true ],
+			[ "cwstc", 0, 64, 64, 64, true ],
+			[ "cwscc", 0, 128, 64, 64, true ],
+			[ "cwsbc", 0, 172, 64, 64, true ],
+			[ "cwsrc", 64, 0, 64, 64, true ],
+			[ "cwstc", 64, 64, 64, 64, true ],
+			[ "cwscc", 64, 128, 64, 64, true ],
+			[ "cwsbc", 64, 172, 64, 64, true ],
+			[ "cwsrc", 128, 0, 64, 64, true ],
+			[ "cwstc", 128, 64, 64, 64, true ],
+			[ "cwscc", 128, 128, 64, 64, true ],
+			[ "cwsbc", 128, 172, 64, 64, true ],
+			[ "cwsrc", 172, 0, 64, 64, true ],
+			[ "cwstc", 172, 64, 64, 64, true ],
+			[ "cwscc", 172, 128, 64, 64, true ],
+			[ "cwsbc", 172, 172, 64, 64, true ],
+			[ "cwsrc", 238, 0, 64, 64, true ],
+			[ "cwstc", 238, 64, 64, 64, true ],
+			[ "cwscc", 238, 128, 64, 64, true ],
+			[ "cwsbc", 238, 172, 64, 64, true ]
+			
+			
+		],
+		[]
+	],
+	"dynamic_objects": []
+}	
+	
