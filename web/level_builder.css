@@ -27,4 +27,31 @@ p {
 
 #canvas {
   border: 1px solid black;
+  float: left;
+  margin: 8px;
+}
+
+#images {
+  border: 1px solid black;
+  float: left;
+  margin: 8px;
+
+  height: 480px;
+  overflow: auto;
+}
+
+.img_title {
+  font-weight: bold;
+  margin: 3px;
+}
+.img_container {
+  margin: 8px;
+  padding: 3px;
+
+
+  border: 1px solid #33ccff;
+}
+
+.clear {
+  clear: both;
 }
