@@ -48,8 +48,12 @@ p {
   margin: 8px;
   padding: 3px;
 
-
+  background: white;
   border: 1px solid #33ccff;
+}
+.img_container:hover {
+  background: blue;
+  cursor: pointer;
 }
 
 .clear {

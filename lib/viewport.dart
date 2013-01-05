@@ -24,6 +24,15 @@ class Viewport {
       this._xBounds, this._yBounds,
       [this._constrain = false]);
 
+  int get viewWidth => this._viewWidth;
+  int get viewHeight => this._viewHeight;
+
+  int get xOffset => this._offsetX;
+  int get yOffset => this._offsetY;
+
+  int get xBounds => this._xBounds;
+  int get yBounds => this._yBounds;
+
   void setBounds(int xBounds, int yBounds) {
     this._xBounds = xBounds;
     this._yBounds = yBounds;
@@ -53,5 +62,18 @@ class Viewport {
     int drawY = y - this._offsetY;
 
     this._drawer.drawImage(image, drawX, drawY, width, height);
+  }
+
+  void drawLine(int startX, int startY, int endX, int endY,
+                [int lineStyle = CanvasDrawer.SOLID]) {
+
+    int drawStartX = startX - this._offsetX;
+    int drawStartY = startY - this._offsetY;
+    int drawEndX = endX - this._offsetX;
+    int drawEndY = endY - this._offsetY;
+
+    this._drawer.drawLine(
+        drawStartX, drawStartY, drawEndX, drawEndY,
+        lineStyle);
   }
 }

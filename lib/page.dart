@@ -9,6 +9,7 @@ part 'src/canvas/canvas_drawer.dart';
 part 'src/events/event.dart';
 part 'src/events/event_handler.dart';
 part 'src/events/keyboard_listener.dart';
+part 'src/events/mouse_listener.dart';
 
 
 
@@ -19,6 +20,7 @@ class Page {
   CanvasDrawer _drawer;
 
   List<KeyboardListener> _keyboardListeners;
+  List<MouseListener> _mouseListeners;
 
 
   Page() {
