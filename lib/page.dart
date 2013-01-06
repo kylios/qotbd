@@ -25,7 +25,7 @@ class Page {
 
   Page() {
 
-    this._manager = new CanvasManager(query('canvas'), width: 640, height: 480);
+    this._manager = new CanvasManager(query('canvas'));
     this._drawer = new CanvasDrawer(this._manager._c);
 
     this._keyboardListeners = new List<KeyboardListener>();

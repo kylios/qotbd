@@ -1,4 +1,4 @@
-library animation;
+library image_list;
 
 import 'package:quest/assets.dart';
 
