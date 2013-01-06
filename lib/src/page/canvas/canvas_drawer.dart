@@ -23,8 +23,10 @@ class CanvasDrawer {
   void drawLine(int startX, int startY, int endX, int endY,
                 [int lineStyle = CanvasDrawer.SOLID]) {
 
+    this._c.beginPath();
     this._c.moveTo(startX, startY);
     this._c.lineTo(endX, endY);
+    this._c.closePath();
     this._c.stroke();
   }
 

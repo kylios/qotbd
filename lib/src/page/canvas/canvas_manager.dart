@@ -13,16 +13,25 @@ class CanvasManager {
 
 
 
-  CanvasManager(this._canvas, {int width: 640, int height: 480}) {
-
-    this._c = this._canvas.getContext("2d");
-    this._width = width;
-    this._height = height;
-
-    this.resize(width, height);
+  CanvasManager() {
 
     this._keyboardListeners = new List<KeyboardListener>();
     this._mouseListeners = new List<MouseListener>();
+  }
+
+  void manageCanvas(CanvasElement canvas, {int width: 640, int height: 480, bool hidden: false}) {
+
+    this._canvas = canvas;
+    this._c = this._canvas.getContext("2d");
+    this._width = width;
+    this._height = height;
+    if (hidden) {
+      this.hide();
+    } else {
+      this.show();
+    }
+
+    this.resize(width, height);
   }
 
   int get width => this._width;
@@ -50,6 +59,13 @@ class CanvasManager {
     this._canvas.on.mouseMove.add(this._onMouseMove);
     this._canvas.on.mouseOver.add(this._onMouseOver);
     this._canvas.on.mouseOut.add(this._onMouseOut);
+  }
+
+  void hide() {
+    this._canvas.hidden = true;
+  }
+  void show() {
+    this._canvas.hidden = false;
   }
 
   void addKeyboardListener(KeyboardListener l) {

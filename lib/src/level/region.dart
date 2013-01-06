@@ -18,6 +18,9 @@ class Region {
     this._assets.addJsonData(this._regionName,
         'game_data/quest/levels/${this._levelName}/regions/${this._regionName}.json');
   }
+  Region.fromEditable(this._levelName, this._regionName, this._assets){
+    this._staticObjects = new GameObjectManager();
+  }
 
   void onLoad(JsonData regionData, AssetManager assets) {
 

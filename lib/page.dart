@@ -4,8 +4,9 @@ import 'dart:html';
 
 import 'package:quest/assets.dart';
 
-part 'src/canvas/canvas_manager.dart';
-part 'src/canvas/canvas_drawer.dart';
+part 'src/page/input_controller.dart';
+part 'src/page/canvas/canvas_manager.dart';
+part 'src/page/canvas/canvas_drawer.dart';
 part 'src/events/event.dart';
 part 'src/events/event_handler.dart';
 part 'src/events/keyboard_listener.dart';
@@ -25,8 +26,7 @@ class Page {
 
   Page() {
 
-    this._manager = new CanvasManager(query('canvas'));
-    this._drawer = new CanvasDrawer(this._manager._c);
+    this._manager = new CanvasManager();
 
     this._keyboardListeners = new List<KeyboardListener>();
 
@@ -36,6 +36,14 @@ class Page {
 
     window.console.log("Page done constructing");
 
+  }
+
+  void manageCanvas(CanvasElement canvas,
+                    width,
+                    height,
+                    hidden) {
+    this._manager.manageCanvas(canvas, width: width, height: height, hidden: hidden);
+    this._drawer = new CanvasDrawer(this._manager._c);
   }
 
   CanvasManager get canvasManager => this._manager;

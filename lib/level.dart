@@ -6,7 +6,8 @@ import 'package:quest/game_object.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/game_data.dart';
 
-part 'region.dart';
+part 'src/level/region.dart';
+part 'src/level/editable_region.dart';
 
 class Level {
 

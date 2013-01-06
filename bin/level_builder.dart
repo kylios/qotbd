@@ -1,4 +1,4 @@
-library quest_level_builder;
+library level_builder;
 
 import 'dart:html';
 import 'package:quest/page.dart';
@@ -35,7 +35,7 @@ class ImageRecord {
   }
 
   void _onClick(MouseEvent e) {
-    this._builder._currentImage = this._image;
+    this._builder.currentImage = this._image;
   }
 }
 
@@ -67,11 +67,24 @@ void start() {
   }
 }
 
+void clickGo(MouseEvent e) {
+
+  window.console.log("clicking go!");
+
+  InputElement widthElem = query('#width');
+  InputElement heightElem = query('#height');
+  int width = int.parse(widthElem.value.toString());
+  int height = int.parse(heightElem.value.toString());
+  builder.start(width, height);
+}
+
 void gameLoaded() {
 
   // Fetch the data
   game = assets.getJson('game').data;
   imageURIMap = assets.getJson('imageURIMap').data;
+
+  query('#go').on.click.add(clickGo);
 
   // Set new callback to fire when new assets are loaded
   assets.setLoadCallback(start);
@@ -98,10 +111,12 @@ void gameLoaded() {
 void main() {
 
   p = new Page();
+  p.manageCanvas(query('canvas'), 640, 480, true);
   CanvasManager mgr = p.canvasManager;
   CanvasDrawer drw = p.canvasDrawer;
 
-  builder = new LevelBuilder(p);
+  assets = new AssetManager(gameLoaded);
+  builder = new LevelBuilder(p, assets);
   imageRecords = new List<ImageRecord>();
 
   drw.setBackground('black');
@@ -110,7 +125,6 @@ void main() {
 
   v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
 
-  assets = new AssetManager(gameLoaded);
 
   // Load the image uri map
   assets.addJsonData('game', 'game_data/quest/game.json');
