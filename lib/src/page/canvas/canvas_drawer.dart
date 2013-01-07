@@ -20,14 +20,59 @@ class CanvasDrawer {
     this._c.drawImage(i.img, x, y, width, height);
   }
 
+  void _drawDashedLine(int startX, int startY, int endX, int endY) {
+
+    int x1 = startX, x2 = endX, y1 = startY, y2 = endY;
+    window.console.log("Drawing dashed line: (${x1},${y1})x(${x2},${y2})");
+    int lineWidth = 6;
+
+    this._c.beginPath();
+    this._c.moveTo(x1, y1);
+
+    int dX = x2 - x1;
+    int dY = y2 - y1;
+    int dashes = sqrt(dX * dX + dY * dY).toInt() ~/ lineWidth;
+    int dashX = dX ~/ dashes;
+    int dashY = dY ~/ dashes;
+
+    int q = 0;
+    while (q++ < dashes) {
+     x1 += dashX;
+     y1 += dashY;
+     if (q % 2 == 0) {
+       this._c.moveTo(x1, y1);
+     } else {
+       this._c.lineTo(x1, y1);
+     }
+    }
+    if (q % 2 == 0) {
+      this._c.moveTo(x2, y2);
+    } else {
+      this._c.lineTo(x2, y2);
+    }
+
+    this._c.stroke();
+    this._c.closePath();
+  }
+
   void drawLine(int startX, int startY, int endX, int endY,
                 [int lineStyle = CanvasDrawer.SOLID]) {
 
-    this._c.beginPath();
-    this._c.moveTo(startX, startY);
-    this._c.lineTo(endX, endY);
-    this._c.closePath();
-    this._c.stroke();
+    if (startX == endX && startY == endY) {
+      return;
+    }
+
+    if (lineStyle == CanvasDrawer.DASHED) {
+
+      return this._drawDashedLine(startX, startY, endX, endY);
+    } else {
+
+      this._c.beginPath();
+      this._c.moveTo(startX, startY);
+      this._c.lineTo(endX, endY);
+      this._c.closePath();
+      this._c.stroke();
+    }
   }
 
   void setForeground(String foregroundColor) {

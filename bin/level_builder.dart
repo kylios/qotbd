@@ -1,11 +1,11 @@
 library level_builder;
 
 import 'dart:html';
+import 'package:quest/level_builder.dart';
 import 'package:quest/page.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/tile.dart';
 import 'package:quest/viewport.dart';
-import 'package:quest/level_builder.dart';
 
 DivElement images = query('#images');
 

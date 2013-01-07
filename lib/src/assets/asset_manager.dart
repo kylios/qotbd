@@ -40,7 +40,7 @@ class AssetManager {
   void addImage(String imgKey, String uri) {
 
     this._pendingLoads++;
-    this._images[imgKey] = new Image(uri, this._imageLoadCallback);
+    this._images[imgKey] = new Image(uri, imgKey, this._imageLoadCallback);
   }
 
   void addJsonData(String jsonKey, String uri) {

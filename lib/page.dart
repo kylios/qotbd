@@ -1,6 +1,7 @@
 library page;
 
 import 'dart:html';
+import 'dart:math';
 
 import 'package:quest/assets.dart';
 

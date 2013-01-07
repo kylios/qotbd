@@ -5,6 +5,7 @@ import 'package:quest/page.dart';
 import 'package:quest/viewport.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/level.dart';
+import 'package:quest/tile.dart';
 
 
 
@@ -12,6 +13,7 @@ class LevelBuilder extends MouseListener {
 
   Page _page;
   Viewport _viewport;
+  AssetManager _imageList;
 
   Image _currentImage = null;
   bool _drawing = false;
@@ -24,10 +26,10 @@ class LevelBuilder extends MouseListener {
   List<String> _colors = [ "white", "red", "orange", "yellow", "green", "blue", "purple", "black" ];
   int _colorIdx = 0;
 
-  Region _region = null;
+  EditableRegion _region = null;
 
-  LevelBuilder(this._page, AssetManager imageList) {
-    this._region = new EditableRegion("level1", "test region", imageList);
+  LevelBuilder(this._page, this._imageList) {
+    this._region = new EditableRegion("level1", "test region", this._imageList);
     this._page.canvasManager.addMouseListener(this);
     this._viewport = new Viewport(this._page.canvasDrawer,
         640, 480, 64 * 20, 64 * 20, true);
@@ -41,8 +43,10 @@ class LevelBuilder extends MouseListener {
   void start(int width, int height) {
     this._page.canvasManager.show();
     // new level
+    this._region.start(width, height);
   }
 
+  String _currentImgKey = null;
   void onMouseOver(MouseEvent e) {
     this._showImageOnCanvas = true;
   }
@@ -77,7 +81,24 @@ class LevelBuilder extends MouseListener {
 
     this.draw();
   }
-  void onMouseClick(MouseEvent e) {}
+  void onMouseClick(MouseEvent e) {
+
+    if (this._currentImage != null) {
+      int offsetX = this._viewport.xOffset;
+      int offsetY = this._viewport.yOffset;
+
+      int cursorX = e.clientX - this._page.canvasManager.offsetX;
+      int cursorY = e.clientY - this._page.canvasManager.offsetY;
+
+      int x = cursorX + offsetX;
+      int y = cursorY + offsetY;
+
+      int row = y ~/ 64;
+      int col = x ~/ 64;
+
+      this._region.setTile(row, col, this._currentImage.imgKey);
+    }
+  }
 
 
   void draw() {
@@ -85,10 +106,35 @@ class LevelBuilder extends MouseListener {
     CanvasDrawer d = this._page.canvasDrawer;
     d.clear(this._page.canvasManager);
 
-    for (int i = 0; i < 20; i++) {
-      this._viewport.drawLine(0, i * 64, 64 * 20, i * 64);
-      this._viewport.drawLine(i * 64, 0, i * 64, 20 * 64);
+    int row = 0;
+    int col = 0;
+    for (List<String> levelRow in this._region.tiles) {
+      col = 0;
+      for (String imgKey in levelRow) {
+        if (imgKey != null) {
+          Tile t = new Tile(this._imageList.getImage(imgKey));
+          this._viewport.drawImage(t.image, 64 * col, 64 * row, 64, 64);
+        }
+        col++;
+      }
+      row++;
     }
+
+    int i;
+    for (i = 0; i < this._region.height; i++) {
+      this._viewport.drawLine(0, i * 64, 64 * this._region.width, i * 64);
+      this._viewport.drawLine(0, i * 64 + 16, 64 * this._region.width, i * 64 + 16, CanvasDrawer.DASHED);
+      this._viewport.drawLine(0, i * 64 + 32, 64 * this._region.width, i * 64 + 32, CanvasDrawer.DASHED);
+      this._viewport.drawLine(0, i * 64 + 48, 64 * this._region.width, i * 64 + 48, CanvasDrawer.DASHED);
+    }
+    this._viewport.drawLine(0, i * 64, 64 * this._region.width, i * 64);
+    for (i = 0; i < this._region.width; i++) {
+      this._viewport.drawLine(i * 64, 0, i * 64, this._region.height * 64);
+      this._viewport.drawLine(i * 64 + 16, 0, i * 64 + 16, 64 * this._region.height, CanvasDrawer.DASHED);
+      this._viewport.drawLine(i * 64 + 32, 0, i * 64 + 32, 64 * this._region.height, CanvasDrawer.DASHED);
+      this._viewport.drawLine(i * 64 + 48, 0, i * 64 + 48, 64 * this._region.height, CanvasDrawer.DASHED);
+    }
+    this._viewport.drawLine(i * 64, 0, i * 64, this._region.height * 64);
 
 
     if (this._currentImage != null && this._showImageOnCanvas) {
