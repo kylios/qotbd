@@ -2,13 +2,13 @@ part of game_object;
 
 
 
-class GameObjectManager {
+class StaticGameObjectManager implements GameObjectManager {
 
   List<Map<int, Map<int, GameObject>>> _objects;
   Map<int, Map<int, GameObject>> _currentLayer = null;
   List<GameObject> _blockingObjects;
 
-  GameObjectManager() {
+  StaticGameObjectManager() {
     this._objects = new List<Map<int, Map<int, GameObject>>>();
     this._blockingObjects = new List<GameObject>();
   }
@@ -35,19 +35,19 @@ class GameObjectManager {
   }
 
   Iterator<GameObject> iterator() {
-    return new GameObjectIterator(this);
+    return new StaticGameObjectIterator(this);
   }
 
   List<GameObject> get blockingObjects => this._blockingObjects;
 
 }
 
-class GameObjectIterator implements Iterator<GameObject> {
+class StaticGameObjectIterator implements Iterator<GameObject> {
 
   List<GameObject> _objects;
   Iterator<GameObject> _iterator;
 
-  GameObjectIterator(GameObjectManager m) {
+  StaticGameObjectIterator(StaticGameObjectManager m) {
     this._objects = new List<GameObject>();
     for (Map<int, Map<int, GameObject>> l in m._objects) {
       for (int r_idx in l.keys) {
