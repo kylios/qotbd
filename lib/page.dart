@@ -8,10 +8,10 @@ import 'package:quest/assets.dart';
 part 'src/page/input_controller.dart';
 part 'src/page/canvas/canvas_manager.dart';
 part 'src/page/canvas/canvas_drawer.dart';
-part 'src/events/event.dart';
-part 'src/events/event_handler.dart';
-part 'src/events/keyboard_listener.dart';
-part 'src/events/mouse_listener.dart';
+part 'src/game_events/event.dart';
+part 'src/game_events/event_handler.dart';
+part 'src/game_events/keyboard_listener.dart';
+part 'src/game_events/mouse_listener.dart';
 
 
 

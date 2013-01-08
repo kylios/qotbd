@@ -11,9 +11,7 @@ DivElement images = query('#images');
 
 // The current image to place on the screen
 List<ImageRecord> imageRecords = null;
-
-bool tileMode = true;
-bool objectMode = false;
+DivElement imagesElem;
 
 Page p;
 Viewport v;
@@ -69,13 +67,27 @@ void start() {
 
 void clickGo(MouseEvent e) {
 
-  window.console.log("clicking go!");
-
   InputElement widthElem = query('#width');
   InputElement heightElem = query('#height');
+  InputElement levelNameElem = query('#level_name');
+  InputElement regionNameElem = query('#region_name');
   int width = int.parse(widthElem.value.toString());
   int height = int.parse(heightElem.value.toString());
-  builder.start(width, height);
+  String levelName = levelNameElem.value.toString();
+  String regionName = regionNameElem.value.toString();
+  builder.start(levelName, regionName, width, height);
+}
+
+void place(Event e) {
+
+  InputElement el = e.target;
+  if (el.value == 'tiles') {
+    builder.placeTiles = true;
+    builder.placeObjects = false;
+  } else if (el.value == 'objects') {
+    builder.placeObjects = true;
+    builder.placeTiles = false;
+  }
 }
 
 void gameLoaded() {
@@ -84,7 +96,12 @@ void gameLoaded() {
   game = assets.getJson('game').data;
   imageURIMap = assets.getJson('imageURIMap').data;
 
+  imagesElem = query('#images');
+
   query('#go').on.click.add(clickGo);
+  queryAll('[name="place"]').forEach((InputElement e) {
+    e.on.click.add(place);
+  });
 
   // Set new callback to fire when new assets are loaded
   assets.setLoadCallback(start);

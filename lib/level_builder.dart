@@ -6,7 +6,7 @@ import 'package:quest/viewport.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/level.dart';
 import 'package:quest/tile.dart';
-
+import 'package:quest/game_object.dart';
 
 
 class LevelBuilder extends MouseListener {
@@ -18,6 +18,8 @@ class LevelBuilder extends MouseListener {
   Image _currentImage = null;
   bool _drawing = false;
   bool _moving = false;
+  bool _placeTiles = true;
+  bool _placeObjects = false;
 
   bool _showImageOnCanvas = false;
   int _imageX = 0;
@@ -29,18 +31,24 @@ class LevelBuilder extends MouseListener {
   EditableRegion _region = null;
 
   LevelBuilder(this._page, this._imageList) {
-    this._region = new EditableRegion("level1", "test region", this._imageList);
-    this._page.canvasManager.addMouseListener(this);
-    this._viewport = new Viewport(this._page.canvasDrawer,
-        640, 480, 64 * 20, 64 * 20, true);
-
-    this.draw();
   }
 
   Image get currentImage => this._currentImage;
   set currentImage(Image i) => this._currentImage = i;
 
-  void start(int width, int height) {
+  bool get placeTiles => this._placeTiles;
+  bool get placeObjects => this._placeObjects;
+  set placeTiles(bool p) => this._placeTiles = p;
+  set placeObjects(bool p) => this._placeObjects = p;
+
+  void start(String levelName, String regionName, int width, int height) {
+
+    this._region = new EditableRegion(levelName, regionName, this._imageList);
+    this._page.canvasManager.addMouseListener(this);
+    this._viewport = new Viewport(this._page.canvasDrawer,
+        640, 480, 64 * width, 64 * height, false);
+
+    this.draw();
     this._page.canvasManager.show();
     // new level
     this._region.start(width, height);
@@ -61,20 +69,24 @@ class LevelBuilder extends MouseListener {
 
     window.console.log("Corsor coords: (${cursorX}, ${cursorY})");
 
-    this._imageX = (cursorX ~/ 64) * 64;
-    this._imageY = (cursorY ~/ 64) * 64;
+    this._imageX = ((cursorX + this._viewport.xOffset) ~/ 64) * 64 + this._viewport.xOffset % 64;
+    this._imageY = ((cursorY + this._viewport.yOffset) ~/ 64) * 64 + this._viewport.yOffset % 64;
 
-    if (cursorX <= 64) {
+    if (cursorX <= 64 &&
+        this._viewport.viewWidth < this._viewport.xBounds) {
 
       this._viewport.setOffset(this._viewport.xOffset - 16, this._viewport.yOffset);
-    } else if (cursorX >= this._viewport.viewWidth - 64) {
+    } else if (cursorX >= this._viewport.viewWidth - 64 &&
+        this._viewport.viewWidth < this._viewport.xBounds) {
 
       this._viewport.setOffset(this._viewport.xOffset + 16, this._viewport.yOffset);
     }
-    if (cursorY <= 64) {
+    if (cursorY <= 64 &&
+        this._viewport.viewHeight < this._viewport.yBounds) {
 
       this._viewport.setOffset(this._viewport.xOffset, this._viewport.yOffset - 16);
-    } else if (cursorY >= this._viewport.viewHeight - 64) {
+    } else if (cursorY >= this._viewport.viewHeight - 64 &&
+        this._viewport.viewHeight < this._viewport.yBounds) {
 
       this._viewport.setOffset(this._viewport.xOffset, this._viewport.yOffset + 16);
     }
@@ -120,25 +132,33 @@ class LevelBuilder extends MouseListener {
       row++;
     }
 
+    for (row = 0; row < this._region.rows; row++) {
+      for (col = 0; col < this._region.cols; col++) {
+        for (GameObject o in this._region.getObjectsAt(row, col)) {
+          this._viewport.drawImage(o.image, col * 64, row * 64, 64, 64);
+        }
+      }
+    }
+
     int i;
-    for (i = 0; i < this._region.height; i++) {
-      this._viewport.drawLine(0, i * 64, 64 * this._region.width, i * 64);
-      this._viewport.drawLine(0, i * 64 + 16, 64 * this._region.width, i * 64 + 16, CanvasDrawer.DASHED);
-      this._viewport.drawLine(0, i * 64 + 32, 64 * this._region.width, i * 64 + 32, CanvasDrawer.DASHED);
-      this._viewport.drawLine(0, i * 64 + 48, 64 * this._region.width, i * 64 + 48, CanvasDrawer.DASHED);
+    for (i = 0; i < this._region.rows; i++) {
+      this._viewport.drawLine(0,  i * 64,       this._region.width, i * 64);
+      this._viewport.drawLine(0,  i * 64 + 16,  this._region.width, i * 64 + 16, CanvasDrawer.DASHED);
+      this._viewport.drawLine(0,  i * 64 + 32,  this._region.width, i * 64 + 32, CanvasDrawer.DASHED);
+      this._viewport.drawLine(0,  i * 64 + 48,  this._region.width, i * 64 + 48, CanvasDrawer.DASHED);
     }
-    this._viewport.drawLine(0, i * 64, 64 * this._region.width, i * 64);
-    for (i = 0; i < this._region.width; i++) {
-      this._viewport.drawLine(i * 64, 0, i * 64, this._region.height * 64);
-      this._viewport.drawLine(i * 64 + 16, 0, i * 64 + 16, 64 * this._region.height, CanvasDrawer.DASHED);
-      this._viewport.drawLine(i * 64 + 32, 0, i * 64 + 32, 64 * this._region.height, CanvasDrawer.DASHED);
-      this._viewport.drawLine(i * 64 + 48, 0, i * 64 + 48, 64 * this._region.height, CanvasDrawer.DASHED);
+    this._viewport.drawLine(0, i * 64, this._region.width, i * 64);
+    for (i = 0; i < this._region.cols; i++) {
+      this._viewport.drawLine(i * 64,       0,  i * 64,       this._region.height);
+      this._viewport.drawLine(i * 64 + 16,  0,  i * 64 + 16,  this._region.height, CanvasDrawer.DASHED);
+      this._viewport.drawLine(i * 64 + 32,  0,  i * 64 + 32,  this._region.height, CanvasDrawer.DASHED);
+      this._viewport.drawLine(i * 64 + 48,  0,  i * 64 + 48,  this._region.height, CanvasDrawer.DASHED);
     }
-    this._viewport.drawLine(i * 64, 0, i * 64, this._region.height * 64);
+    this._viewport.drawLine(i * 64, 0, i * 64, this._region.height);
 
 
     if (this._currentImage != null && this._showImageOnCanvas) {
-      d.drawImage(this._currentImage,
+      this._viewport.drawImage(this._currentImage,
           this._imageX - this._viewport.xOffset % 64,
           this._imageY - this._viewport.yOffset % 64,
           64, 64);

@@ -31,10 +31,16 @@ p {
   margin: 8px;
 }
 
-#images {
+#right_pane {
   border: 1px solid black;
   float: left;
   margin: 8px;
+  padding: 4px;
+}
+
+#images {
+
+  border: 1px solid black;
 
   height: 480px;
   overflow: auto;

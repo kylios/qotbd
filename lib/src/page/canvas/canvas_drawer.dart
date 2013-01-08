@@ -23,7 +23,6 @@ class CanvasDrawer {
   void _drawDashedLine(int startX, int startY, int endX, int endY) {
 
     int x1 = startX, x2 = endX, y1 = startY, y2 = endY;
-    window.console.log("Drawing dashed line: (${x1},${y1})x(${x2},${y2})");
     int lineWidth = 6;
 
     this._c.beginPath();

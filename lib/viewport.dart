@@ -40,10 +40,18 @@ class Viewport {
 
   void setOffset(int x, int y) {
     if (this._constrain) {
-      if (x < 0) x = 0;
-      else if (x + this._viewWidth > this._xBounds)  x = this._xBounds - this._viewWidth;
-      if (y < 0) y = 0;
-      else if (y + this._viewHeight > this._yBounds) y = this._yBounds - this._viewHeight;
+      if (x < 0) {
+        x = 0;
+      }
+      else if (x + this._viewWidth > this._xBounds) {
+        x = this._xBounds - this._viewWidth;
+      }
+      if (y < 0) {
+        y = 0;
+      }
+      else if (y + this._viewHeight > this._yBounds) {
+        y = this._yBounds - this._viewHeight;
+      }
     }
 
     this._offsetX = x;

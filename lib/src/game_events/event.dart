@@ -1,6 +1,6 @@
 part of page;
 
-class Event {
+class GameEvent {
 
   String _type;
 }

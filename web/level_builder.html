@@ -12,13 +12,29 @@
     <p>Hello world from Dart!</p>
 
     <div id="level_settings">
-      <span>Width: <input type="text" size="4" id="width" /></span>
-      <span>Height: <input type="text" size="4" id="height" /></span>
-      <span><input type="button" value="Go!" id="go" /></span>
+      <div>
+        <span>Level name: <input type="text" id="level_name" /></span>
+        <span>Region name: <input type="text" id="region_name" /></span>
+      </div>
+      <div>
+        <span>Width: <input type="text" size="4" id="width" /></span>
+        <span>Height: <input type="text" size="4" id="height" /></span>
+        <span><input type="button" value="Start!" id="go" /></span>
+      </div>
+      <div>
+        <span><input type="button" value="Export" id="export" /></span>
+      </div>
     </div>
     <div id="container">
       <canvas id="canvas"></canvas>
-      <div id="images"></div>
+      <div id="right_pane">
+        <div>
+          <span>Place Tiles<input type="radio" name="place" value="tiles" checked="checked" /></span>
+          <span>Place Objects<input type="radio" name="place" value="objects" /></span>
+        </div>
+        <div id="images"></div>
+        <div id="objects"></div>
+      </div>
       <div class="clear"></div>
     </div>
 
