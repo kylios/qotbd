@@ -1,9 +1,10 @@
 {
+"_tiles": [["cfstl","cfstc","cfstc","cfstr"],["cfscl","gsc","gsc","cfscr"],["cfscl","gsc","gsc","cfscr"],["cfscl","gsc","gsc","cfscr"],["cfsbl","cfsbc","cfsbc","cfsbr"],["gsc","gsc","gsc","gsc"],[null,null,null,null],[null,null,null,null]],
 	"tiles": [
 		["gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc"],
 		["gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc"],
-		[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-		[null, "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstr", null],
+    ["gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc", "gsc"],
+		[null, "cfstl", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstc", "cfstr", null],
 		[null, "cfscl", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscc", "cfscr", null],
 		[null, "cfscl", "cfscc", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfdtl", "cfdtr", "cfscc", "cfscr", null],
 		[null, "cfscl", "cfscc", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfdbl", "cfdbr", "cfscc", "cfscr", null],
@@ -35,19 +36,41 @@
 			[ "cwstc", 128, 64, 64, 64, true ],
 			[ "cwscc", 128, 128, 64, 64, true ],
 			[ "cwsbc", 128, 172, 64, 64, true ],
-			[ "cwsrc", 172, 0, 64, 64, true ],
-			[ "cwstc", 172, 64, 64, 64, true ],
-			[ "cwscc", 172, 128, 64, 64, true ],
-			[ "cwsbc", 172, 172, 64, 64, true ],
-			[ "cwsrc", 236, 0, 64, 64, true ],
-			[ "cwstc", 236, 64, 64, 64, true ],
-			[ "cwscc", 236, 128, 64, 64, true ],
-			[ "cwsbc", 236, 172, 64, 64, true ]
-			
-			
+			[ "cwsrc", 192, 0, 64, 64, true ],
+			[ "cwstc", 192, 64, 64, 64, true ],
+			[ "cwscc", 192, 128, 64, 64, true ],
+			[ "cwsbc", 192, 172, 64, 64, true ],
+			[ "cwsrc", 256, 0, 64, 64, true ],
+			[ "cwstc", 256, 64, 64, 64, true ],
+			[ "cwscc", 256, 128, 64, 64, true ],
+			[ "cwsbc", 256, 172, 64, 64, true ],
+
+
+      [ "cwsrc", 492, 0, 64, 64, true ],
+      [ "cwstc", 492, 64, 64, 64, true ],
+      [ "cwscc", 492, 128, 64, 64, true ],
+      [ "cwsbc", 492, 172, 64, 64, true ],
+      [ "cwsrc", 492, 0, 64, 64, true ],
+      [ "cwstc", 492, 64, 64, 64, true ],
+      [ "cwscc", 492, 128, 64, 64, true ],
+      [ "cwsbc", 492, 172, 64, 64, true ]
 		],
-		[]
+		[
+      ["cwfbl", 256, 172, 64, 64, true],
+      ["cwfc1l", 256, 128, 64, 64, true],
+      ["cwfc2l", 256, 64, 64, 64, true],
+      ["cwftl", 256, 0, 64, 64, true],
+      ["cwftc", 320, 0, 64, 64, true],
+      ["cwatl", 320, 64, 64, 64, false],
+      ["cwacl", 320, 128, 64, 64, true],
+      ["cwabl", 320, 172, 64, 64, true],
+      ["cwftc", 384, 0, 64, 64, true],
+      ["cwatc", 384, 64, 64, 64, false],
+      ["cwacc", 384, 128, 64, 64, false],
+      ["cwatr", 448, 64, 64, 64, false],
+      ["cwacr", 448, 128, 64, 64, true],
+      ["cwabr", 448, 172, 64, 64, true]
+		]
 	],
 	"dynamic_objects": []
-}	
-	
+}
