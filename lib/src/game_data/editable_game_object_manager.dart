@@ -11,7 +11,11 @@ class EditableGameObjectManager implements GameObjectManager {
   }
 
   void newLayer() {
-    this._layer++;
+    if (this.hasNextLayer()) {
+      window.console.log("does not have a next layer");
+      this._layer++;
+    }
+    this._objects[this._layer]= new Map<int, List<GameObject>>();
   }
   void layerFirst() {
     this._layer = 0;
@@ -27,7 +31,7 @@ class EditableGameObjectManager implements GameObjectManager {
 
       for (List<GameObject> objects in row.values) {
 
-        if (objects[this._layer] != null ) {
+        if (objects.length > this._layer) {
           layer.add(objects[this._layer]);
         }
       }
@@ -66,11 +70,9 @@ class EditableGameObjectIterator extends Iterator<GameObject> {
 
   EditableGameObjectIterator(EditableGameObjectManager objects) {
 
-    window.console.log("Creating EditableGameObjectIterator");
     this._objects = objects.layer;
     this._iterator = this._objects.iterator();
 
-    window.console.log("Constructed");
   }
 
   bool get hasNext => this._iterator.hasNext;

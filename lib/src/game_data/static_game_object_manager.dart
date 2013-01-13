@@ -24,6 +24,9 @@ class StaticGameObjectManager implements GameObjectManager {
   void layerFirst() {
     this._currentLayer = 0;
   }
+  bool hasNextLayer() {
+    return this._currentLayer < this._objects.length;
+  }
 
   List<GameObject> get layer {
     List<List<GameObject>> layer = new List<List<GameObject>>();

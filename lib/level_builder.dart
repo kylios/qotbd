@@ -67,8 +67,6 @@ class LevelBuilder extends MouseListener {
     int cursorX = e.clientX - this._page.canvasManager.offsetX;
     int cursorY = e.clientY - this._page.canvasManager.offsetY;
 
-    window.console.log("Corsor coords: (${cursorX}, ${cursorY})");
-
     if (this._placeTiles) {
 
       this._imageX = ((cursorX + this._viewport.xOffset) ~/ 64) * 64 + this._viewport.xOffset % 64;

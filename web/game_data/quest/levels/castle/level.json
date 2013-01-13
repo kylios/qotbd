@@ -1,7 +1,8 @@
 {
 	"name": "Castle",
 	"regions":[
-		"main_courtyard"
+		"main_courtyard",
+		"new_castle"
 	],
-	"starting_region": "main_courtyard"
+	"starting_region": "new_castle"
 }

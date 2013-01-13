@@ -13,6 +13,7 @@ class EditableRegion extends Region {
       : super.fromEditable(levelName, regionName, imageAssets) {
     this._tiles = new List<List<String>>();
     this.staticObjects = new EditableGameObjectManager();
+    this.staticObjects.newLayer();
   }
 
   int get width => this._width;
@@ -48,9 +49,11 @@ class EditableRegion extends Region {
 
   void addObject(GameObject o) {
     if (this._staticObjects == null) {
+      window.console.log("static objects is null");
       return;
     }
-    this._staticObjects.add(o);
+    window.console.log("Adding ${o.toString()} to static objects");
+    this.staticObjects.add(o);
   }
 
   String toJson() {
@@ -63,25 +66,10 @@ class EditableRegion extends Region {
     int i = 0;
     this.staticObjects.layerFirst();
     while (this.staticObjects.hasNextLayer()) {
-      added = false;
-      List<List> l = new List<List>();
-      for (Map<int, List<GameObject>> row in this.staticObjects) {
-        if (row == null) {
-          continue;
-        }
-        for (List<GameObject> os in row.values) {
-          if (os == null || os[i] == null) {
-            continue;
-          }
-          GameObject o = os[i];
-          l.add([
-            o.image.imgKey,
-            o.x, o.y, o.width, o.height, o.blocking
-                 ]);
-          added = true;
-        }
-      }
-      layers.add(l);
+      layers.add(this.staticObjects.layer.map(
+          // Convert the GameObject to a json object
+          // (TODO: this could be part of a GameObject.export() function)
+          (GameObject o) => [ o.image.imgKey, o.x, o.y, o.width, o.height, o.blocking]));
       this.staticObjects.newLayer();
       i++;
     }
