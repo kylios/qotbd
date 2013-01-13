@@ -26,6 +26,11 @@ abstract class GameObjectManager implements Iterable {
   void add(GameObject o);
 
   /**
+   * Remove all objects at the given row and col.
+   */
+  void remove(int row, int col);
+
+  /**
    * Equals a list containing all the game objects on the current layer.
    */
   List<GameObject> get layer;

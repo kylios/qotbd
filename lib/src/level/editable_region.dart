@@ -47,6 +47,13 @@ class EditableRegion extends Region {
     }
   }
 
+  void clearTile(int row, int col) {
+    if (row >= 0 && col >= 0 &&
+        this._tiles.length > row && this._tiles[0].length > col) {
+      this._tiles[row][col] = null;
+    }
+  }
+
   void addObject(GameObject o) {
     if (this._staticObjects == null) {
       window.console.log("static objects is null");
@@ -54,6 +61,13 @@ class EditableRegion extends Region {
     }
     window.console.log("Adding ${o.toString()} to static objects");
     this.staticObjects.add(o);
+  }
+
+  void removeObject(int row, int col) {
+    if (this._staticObjects == null) {
+      return;
+    }
+    this.staticObjects.remove(row, col);
   }
 
   String toJson() {

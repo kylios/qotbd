@@ -46,6 +46,10 @@ p {
   overflow: auto;
 }
 
+#erase {
+  background: #C02840;
+}
+
 .img_title {
   font-weight: bold;
   margin: 3px;

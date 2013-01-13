@@ -22,6 +22,7 @@ class CanvasManager {
   void manageCanvas(CanvasElement canvas, {int width: 640, int height: 480, bool hidden: false}) {
 
     this._canvas = canvas;
+    //this._canvas.on.contextMenu.remove();
     this._c = this._canvas.getContext("2d");
     this._width = width;
     this._height = height;

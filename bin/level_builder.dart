@@ -100,6 +100,8 @@ void gameLoaded() {
 
   query('#go').on.click.add(clickGo);
   query('#export').on.click.add((Event e) => query('#json').innerHtml = builder.export());
+  query('#json').on.click.add((Event e) => query('#json').nodes[0]);
+  query('#erase').on.click.add((Event e) => builder.erase());
   queryAll('[name="place"]').forEach((InputElement e) {
     e.on.click.add(place);
   });

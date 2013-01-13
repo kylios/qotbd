@@ -57,6 +57,12 @@ class EditableGameObjectManager implements GameObjectManager {
     this._objects[row][col].add(o);
   }
 
+  void remove(int row, int col) {
+    if (this._objects[row] != null) {
+      this._objects[row].remove(col);
+    }
+  }
+
   Iterator<GameObject> iterator() {
 
     return new EditableGameObjectIterator(this);

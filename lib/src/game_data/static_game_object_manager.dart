@@ -49,6 +49,14 @@ class StaticGameObjectManager implements GameObjectManager {
     this._objects[this._currentLayer][y][x] = o;
   }
 
+  void remove(int row, int col) {
+    for (Map<int, Map<int, GameObject>> layer in this._objects) {
+      if (layer[row] != null && layer[row][col] != null) {
+        layer[row].remove(col);
+      }
+    }
+  }
+
   Iterator<GameObject> iterator() {
     return new StaticGameObjectIterator(this);
   }

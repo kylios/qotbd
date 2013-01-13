@@ -21,6 +21,7 @@ class LevelBuilder extends MouseListener {
   bool _placeTiles = true;
   bool _placeObjects = false;
 
+  bool _erase = false;
   bool _showImageOnCanvas = false;
   int _imageX = 0;
   int _imageY = 0;
@@ -34,7 +35,10 @@ class LevelBuilder extends MouseListener {
   }
 
   Image get currentImage => this._currentImage;
-  set currentImage(Image i) => this._currentImage = i;
+  set currentImage(Image i) {
+    this._currentImage = i;
+    this._erase = false;
+  }
 
   bool get placeTiles => this._placeTiles;
   bool get placeObjects => this._placeObjects;
@@ -52,6 +56,11 @@ class LevelBuilder extends MouseListener {
     this._page.canvasManager.show();
     // new level
     this._region.start(width, height);
+  }
+
+  void erase() {
+    this._currentImage = null;
+    this._erase = true;
   }
 
   String _currentImgKey = null;
@@ -100,28 +109,33 @@ class LevelBuilder extends MouseListener {
     this.draw();
   }
   void onMouseClick(MouseEvent e) {
+    int offsetX = this._viewport.xOffset;
+    int offsetY = this._viewport.yOffset;
 
-    if (this._currentImage != null) {
-      int offsetX = this._viewport.xOffset;
-      int offsetY = this._viewport.yOffset;
+    int cursorX = e.clientX - this._page.canvasManager.offsetX;
+    int cursorY = e.clientY - this._page.canvasManager.offsetY;
 
-      int cursorX = e.clientX - this._page.canvasManager.offsetX;
-      int cursorY = e.clientY - this._page.canvasManager.offsetY;
+    int x = cursorX + offsetX;
+    int y = cursorY + offsetY;
+    if (this._placeTiles) {
 
-      int x = cursorX + offsetX;
-      int y = cursorY + offsetY;
+      int row = y ~/ 64;
+      int col = x ~/ 64;
 
-      if (this._placeTiles) {
-
-        int row = y ~/ 64;
-        int col = x ~/ 64;
-
+      if (this._erase){
+        this._region.clearTile(row, col);
+      }
+      else if (this._currentImage != null) {
         this._region.setTile(row, col, this._currentImage.imgKey);
       }
-      if (this._placeObjects) {
-        int row = y ~/ 16;
-        int col = x ~/ 16;
+    }
+    if (this._placeObjects) {
+      int row = y ~/ 16;
+      int col = x ~/ 16;
 
+      if (this._erase){
+        this._region.removeObject(row, col);
+      } else if (this._currentImage != null) {
         GenericObject o = new GenericObject(this._currentImage, col * 16, row * 16, 64, 64, true);
         this._region.addObject(o);
       }
