@@ -1,6 +1,8 @@
 library level;
 
 import 'dart:html';
+import 'dart:json';
+
 import 'package:quest/tile.dart';
 import 'package:quest/game_object.dart';
 import 'package:quest/assets.dart';

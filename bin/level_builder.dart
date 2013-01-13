@@ -99,6 +99,7 @@ void gameLoaded() {
   imagesElem = query('#images');
 
   query('#go').on.click.add(clickGo);
+  query('#export').on.click.add((Event e) => query('#json').innerHtml = builder.export());
   queryAll('[name="place"]').forEach((InputElement e) {
     e.on.click.add(place);
   });

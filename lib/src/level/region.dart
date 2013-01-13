@@ -14,12 +14,12 @@ class Region {
 
   Region(this._levelName, this._regionName, this._assets) {
 
-    this._staticObjects = new GameObjectManager();
+    this._staticObjects = new StaticGameObjectManager();
     this._assets.addJsonData(this._regionName,
         'game_data/quest/levels/${this._levelName}/regions/${this._regionName}.json');
   }
   Region.fromEditable(this._levelName, this._regionName, this._assets){
-    this._staticObjects = new GameObjectManager();
+    this._staticObjects = new StaticGameObjectManager();
   }
 
   void onLoad(JsonData regionData, AssetManager assets) {
@@ -48,4 +48,9 @@ class Region {
 
   List<List<String>> get tiles => this._tiles;
   GameObjectManager get staticObjects => this._staticObjects;
+  set staticObjects(GameObjectManager m) => this._staticObjects = m;
+
+  String toJson() {
+
+  }
 }

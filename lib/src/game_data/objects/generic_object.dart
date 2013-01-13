@@ -1,4 +1,4 @@
-part of game_data;
+part of game_object;
 
 class GenericObject extends GameObject {
 

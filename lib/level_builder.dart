@@ -69,8 +69,16 @@ class LevelBuilder extends MouseListener {
 
     window.console.log("Corsor coords: (${cursorX}, ${cursorY})");
 
-    this._imageX = ((cursorX + this._viewport.xOffset) ~/ 64) * 64 + this._viewport.xOffset % 64;
-    this._imageY = ((cursorY + this._viewport.yOffset) ~/ 64) * 64 + this._viewport.yOffset % 64;
+    if (this._placeTiles) {
+
+      this._imageX = ((cursorX + this._viewport.xOffset) ~/ 64) * 64 + this._viewport.xOffset % 64;
+      this._imageY = ((cursorY + this._viewport.yOffset) ~/ 64) * 64 + this._viewport.yOffset % 64;
+
+    } else if (this._placeObjects) {
+
+      this._imageX = ((cursorX + this._viewport.xOffset) ~/ 16) * 16 + this._viewport.xOffset % 64;
+      this._imageY = ((cursorY + this._viewport.yOffset) ~/ 16) * 16 + this._viewport.yOffset % 64;
+    }
 
     if (cursorX <= 64 &&
         this._viewport.viewWidth < this._viewport.xBounds) {
@@ -105,10 +113,20 @@ class LevelBuilder extends MouseListener {
       int x = cursorX + offsetX;
       int y = cursorY + offsetY;
 
-      int row = y ~/ 64;
-      int col = x ~/ 64;
+      if (this._placeTiles) {
 
-      this._region.setTile(row, col, this._currentImage.imgKey);
+        int row = y ~/ 64;
+        int col = x ~/ 64;
+
+        this._region.setTile(row, col, this._currentImage.imgKey);
+      }
+      if (this._placeObjects) {
+        int row = y ~/ 16;
+        int col = x ~/ 16;
+
+        GenericObject o = new GenericObject(this._currentImage, col * 16, row * 16, 64, 64, true);
+        this._region.addObject(o);
+      }
     }
   }
 
@@ -132,12 +150,8 @@ class LevelBuilder extends MouseListener {
       row++;
     }
 
-    for (row = 0; row < this._region.rows; row++) {
-      for (col = 0; col < this._region.cols; col++) {
-        for (GameObject o in this._region.getObjectsAt(row, col)) {
-          this._viewport.drawImage(o.image, col * 64, row * 64, 64, 64);
-        }
-      }
+    for (GameObject o in this._region.staticObjects) {
+      this._viewport.drawImage(o.image, o.x, o.y, 64, 64);
     }
 
     int i;
@@ -163,5 +177,9 @@ class LevelBuilder extends MouseListener {
           this._imageY - this._viewport.yOffset % 64,
           64, 64);
     }
+  }
+
+  String export() {
+    return this._region.toJson();
   }
 }

@@ -5,7 +5,7 @@ part of game_object;
 class StaticGameObjectManager implements GameObjectManager {
 
   List<Map<int, Map<int, GameObject>>> _objects;
-  Map<int, Map<int, GameObject>> _currentLayer = null;
+  int _currentLayer = 0;
   List<GameObject> _blockingObjects;
 
   StaticGameObjectManager() {
@@ -13,25 +13,37 @@ class StaticGameObjectManager implements GameObjectManager {
     this._blockingObjects = new List<GameObject>();
   }
 
+
+
   void newLayer() {
-    this._currentLayer = new Map<int, Map<int, GameObject>>();
-    this._objects.add(this._currentLayer);
+    if (this._currentLayer == 0 && this._objects.length == 0) {
+      return;
+    }
+    this._currentLayer++;
+  }
+  void layerFirst() {
+    this._currentLayer = 0;
+  }
+
+  List<GameObject> get layer {
+    List<List<GameObject>> layer = new List<List<GameObject>>();
   }
 
   void add(GameObject o) {
     if (o.blocking) {
       this._blockingObjects.add(o);
     }
-    if (this._currentLayer == null) {
-      return;
+    while (this._objects.length <= this._currentLayer) {
+      this._objects.add(new Map<int, Map<int, GameObject>>());
     }
+
     int x = o.x ~/ 16;
     int y = o.y ~/ 16;
 
-    if (this._currentLayer[y] == null) {
-      this._currentLayer[y] = new Map<int, GameObject>();
+    if (this._objects[this._currentLayer][y] == null) {
+      this._objects[this._currentLayer][y] = new Map<int, GameObject>();
     }
-    this._currentLayer[y][x] = o;
+    this._objects[this._currentLayer][y][x] = o;
   }
 
   Iterator<GameObject> iterator() {

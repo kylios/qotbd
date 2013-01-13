@@ -5,8 +5,6 @@ import 'package:quest/assets.dart';
 import 'package:quest/image_list.dart';
 import 'package:quest/game_object.dart';
 
-part 'src/game_data/objects/generic_object.dart';
-
 part 'src/game_data/hero.dart';
 
 // objects

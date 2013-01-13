@@ -3,6 +3,7 @@ part of game_object;
 class EditableGameObjectManager implements GameObjectManager {
 
   Map<int, Map<int, List<GameObject>>> _objects;
+  int _layer = 0;
 
   EditableGameObjectManager() {
 
@@ -10,7 +11,32 @@ class EditableGameObjectManager implements GameObjectManager {
   }
 
   void newLayer() {
-    return;
+    this._layer++;
+  }
+  void layerFirst() {
+    this._layer = 0;
+  }
+  bool hasNextLayer() {
+    return this._layer < this._objects.keys.reduce(0,
+        (prev, val) => (prev > val ? prev : val));
+  }
+
+  List<GameObject> get layer {
+    List<GameObject> layer = new List<GameObject>();
+    for (Map<int, List<GameObject>> row in this._objects.values){
+
+      for (List<GameObject> objects in row.values) {
+
+        if (objects[this._layer] != null ) {
+          layer.add(objects[this._layer]);
+        }
+      }
+    }
+    return layer;
+  }
+
+  List<GameObject> get blockingObjects {
+
   }
 
   void add(GameObject o) {
@@ -29,7 +55,7 @@ class EditableGameObjectManager implements GameObjectManager {
 
   Iterator<GameObject> iterator() {
 
-    return new EditableGameObjectIterator(this._objects);
+    return new EditableGameObjectIterator(this);
   }
 }
 
@@ -38,24 +64,13 @@ class EditableGameObjectIterator extends Iterator<GameObject> {
   List<GameObject> _objects;
   Iterator<GameObject> _iterator;
 
-  EditableGameObjectIterator(Map<int, Map<int, List<GameObject>>> objects) {
+  EditableGameObjectIterator(EditableGameObjectManager objects) {
 
-    this._objects = new List<GameObject>();
-
-    for (Map<int, List<GameObject>> row in objects.values) {
-      if (row == null) {
-        continue;
-      }
-      for (List<GameObject> stack in row.values) {
-        if (stack == null) {
-          continue;
-        }
-        for (GameObject o in stack) {
-          this._objects.add(o);
-        }
-      }
-    }
+    window.console.log("Creating EditableGameObjectIterator");
+    this._objects = objects.layer;
     this._iterator = this._objects.iterator();
+
+    window.console.log("Constructed");
   }
 
   bool get hasNext => this._iterator.hasNext;
