@@ -102,6 +102,14 @@ void gameLoaded() {
   query('#export').on.click.add((Event e) => query('#json').innerHtml = builder.export());
   query('#json').on.click.add((Event e) => query('#json').nodes[0]);
   query('#erase').on.click.add((Event e) => builder.erase());
+  query('#blocking').on.change.add((Event e) {
+    InputElement el = e.target;
+    if (el.checked) {
+      builder.blocking = true;
+    } else {
+      builder.blocking = false;
+    }
+  });
   queryAll('[name="place"]').forEach((InputElement e) {
     e.on.click.add(place);
   });

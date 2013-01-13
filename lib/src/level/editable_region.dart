@@ -83,7 +83,7 @@ class EditableRegion extends Region {
       layers.add(this.staticObjects.layer.map(
           // Convert the GameObject to a json object
           // (TODO: this could be part of a GameObject.export() function)
-          (GameObject o) => [ o.image.imgKey, o.x, o.y, o.width, o.height, o.blocking]));
+          (GameObject o) => o.toArray()));
       this.staticObjects.newLayer();
       i++;
     }

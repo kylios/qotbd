@@ -20,6 +20,7 @@ class LevelBuilder extends MouseListener {
   bool _moving = false;
   bool _placeTiles = true;
   bool _placeObjects = false;
+  bool _blocking = true;
 
   bool _erase = false;
   bool _showImageOnCanvas = false;
@@ -44,6 +45,9 @@ class LevelBuilder extends MouseListener {
   bool get placeObjects => this._placeObjects;
   set placeTiles(bool p) => this._placeTiles = p;
   set placeObjects(bool p) => this._placeObjects = p;
+
+  bool get blocking => this._blocking;
+  set blocking(bool b) => this._blocking = b;
 
   void start(String levelName, String regionName, int width, int height) {
 
@@ -136,7 +140,7 @@ class LevelBuilder extends MouseListener {
       if (this._erase){
         this._region.removeObject(row, col);
       } else if (this._currentImage != null) {
-        GenericObject o = new GenericObject(this._currentImage, col * 16, row * 16, 64, 64, true);
+        GenericObject o = new GenericObject(this._currentImage, col * 16, row * 16, 64, 64, this._blocking);
         this._region.addObject(o);
       }
     }

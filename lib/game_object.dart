@@ -30,4 +30,6 @@ abstract class GameObject implements Tickable {
   int get height => this._height;
   Image get image => this._img;
   bool get blocking => this._blocking;
+
+  List toArray();
 }

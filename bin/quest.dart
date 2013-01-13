@@ -16,39 +16,13 @@ Page p;
 AssetManager assets;
 Viewport v;
 Hero player;
-GameObjectManager objects;
+//GameObjectManager objects;
 Map game;
 Level currentLevel;
 Map<String, Level> gameLevels;
 Region currentRegion;
 
 Map<String, String> imageURIMap = null;
-
-/*
-List<List<String>> level =
-[
-  ['gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc'],
-  ['gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc', 'gsc'],
-  [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-  [null, 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstc', 'cfstr', null],
-  [null, 'cfscl', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfdtl', 'cfdtr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfdbl', 'cfdbr', 'cfscc', 'cfscr', null],
-  [null, 'cfscl', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscc', 'cfscr', null],
-  [null, 'cfsbl', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbc', 'cfsbr', null],
-  [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-];
-*/
 
 double fpsAverage = 0.0;
 num _renderTime = null;
@@ -200,50 +174,6 @@ void gameLoaded() {
   }
 
   gameLevels[game['levels'][0]] = new Level(assets, game['levels'][0], levelLoaded);
-
-  objects = new StaticGameObjectManager();
-  objects.newLayer();
-  for (int i = 1; i < 19; i++) {
-    if (i < 5 || i > 7) {
-      objects.add(new CastleWallRoofCenterStandard(assets, 64 * i, 0));
-      objects.add(new CastleWallTopCenterStandard(assets, 64 * i, 64));
-      objects.add(new GenericObject(assets.getImage(
-          (i == 2 || i == 14 ? 'cwbcc' : 'cwscc')),
-          64 * i, 128, 64, 64, true));
-      objects.add(new CastleWallBottomCenterStandard(assets, 64 * i, 172));
-    }
-
-  }
-  objects.add(new GenericObject(assets.getImage('cwabl'),
-      64 * 5, 172, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwacl'),
-      64 * 5, 128, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwatl'),
-      64 * 5, 64, 64, 64, true));
-
-  objects.newLayer();
-  objects.add(new GenericObject(assets.getImage('cwftc'),
-      64 * 5, 0, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwfbl'),
-      64 * 4, 172, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwfc1l'),
-      64 * 4, 128, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwfc2l'),
-      64 * 4, 64, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwftl'),
-      64 * 4, 0, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwftc'),
-      64 * 6, 0, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwatc'),
-      64 * 6, 64, 64, 64, false));
-  objects.add(new GenericObject(assets.getImage('cwacc'),
-      64 * 6, 128, 64, 64, false));
-  objects.add(new GenericObject(assets.getImage('cwatr'),
-      64 * 7, 64, 64, 64, false));
-  objects.add(new GenericObject(assets.getImage('cwacr'),
-      64 * 7, 128, 64, 64, true));
-  objects.add(new GenericObject(assets.getImage('cwabr'),
-      64 * 7, 172, 64, 64, true));
 
   player = new Hero(assets, 640 ~/ 2 - 32, 256);
 

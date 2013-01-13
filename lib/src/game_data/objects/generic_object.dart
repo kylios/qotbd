@@ -7,5 +7,9 @@ class GenericObject extends GameObject {
 
   }
 
+  List toArray() {
+    return [ this.image.imgKey, this.x, this.y, this.width, this.height, this.blocking];
+  }
+
   void tick() {}
 }
