@@ -35,5 +35,8 @@ abstract class GameObjectManager implements Iterable {
    */
   List<GameObject> get layer;
 
-  List<GameObject> get blockingObjects;
+  /**
+   * Get blocking objects close to the given coordinates.
+   */
+  List<GameObject> getNearbyBlockingObjects(int x, int y);
 }

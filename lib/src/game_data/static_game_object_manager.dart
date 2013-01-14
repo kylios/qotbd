@@ -4,22 +4,29 @@ part of game_object;
 
 class StaticGameObjectManager implements GameObjectManager {
 
-  List<Map<int, Map<int, GameObject>>> _objects;
+  Map<int, Map<int, List<GameObject>>> _blockingObjects;
   int _currentLayer = 0;
-  List<GameObject> _blockingObjects;
+
+  // This data structure should hold a reference to all blocking objects in the
+  List<List<GameObject>> _objects;
 
   StaticGameObjectManager() {
-    this._objects = new List<Map<int, Map<int, GameObject>>>();
-    this._blockingObjects = new List<GameObject>();
+    this._blockingObjects = new Map<int, Map<int, List<GameObject>>>();
+    this._objects = new List<List<GameObject>>();
   }
 
 
 
   void newLayer() {
-    if (this._currentLayer == 0 && this._objects.length == 0) {
-      return;
+    if (this._currentLayer != 0 || this._objects.length != 0) {
+      this._currentLayer++;
     }
-    this._currentLayer++;
+
+    // Make sure that there's always a current layer to add objects to
+    if (this._currentLayer >= this._objects.length ||
+        this._objects[this._currentLayer] == null) {
+      this._objects.add(new List<GameObject>());
+    }
   }
   void layerFirst() {
     this._currentLayer = 0;
@@ -28,41 +35,60 @@ class StaticGameObjectManager implements GameObjectManager {
     return this._currentLayer < this._objects.length;
   }
 
-  List<GameObject> get layer {
-    List<List<GameObject>> layer = new List<List<GameObject>>();
-  }
+  List<GameObject> get layer => (this._objects.length > this._currentLayer ?
+      this._objects[this._currentLayer] : new List<GameObject>());
 
   void add(GameObject o) {
+
+    this._objects[this._currentLayer].add(o);
     if (o.blocking) {
-      this._blockingObjects.add(o);
-    }
-    while (this._objects.length <= this._currentLayer) {
-      this._objects.add(new Map<int, Map<int, GameObject>>());
-    }
 
-    int x = o.x ~/ 16;
-    int y = o.y ~/ 16;
+      // 16 pixel grid for collision detection.  Our movement vector cannot
+      // exceed 16 pixels for a single tick.
+      int x = o.x ~/ 16;
+      int y = o.y ~/ 16;
 
-    if (this._objects[this._currentLayer][y] == null) {
-      this._objects[this._currentLayer][y] = new Map<int, GameObject>();
+      if (this._blockingObjects[y] == null) {
+        this._blockingObjects[y] =
+            new Map<int, List<GameObject>>();
+      }
+      if (this._blockingObjects[y][x] == null) {
+        this._blockingObjects[y][x] = new List<GameObject>();
+      }
+      this._blockingObjects[y][x].add(o);
     }
-    this._objects[this._currentLayer][y][x] = o;
   }
 
   void remove(int row, int col) {
-    for (Map<int, Map<int, GameObject>> layer in this._objects) {
-      if (layer[row] != null && layer[row][col] != null) {
-        layer[row].remove(col);
-      }
-    }
+    return;
   }
 
   Iterator<GameObject> iterator() {
     return new StaticGameObjectIterator(this);
   }
 
-  List<GameObject> get blockingObjects => this._blockingObjects;
+  List<GameObject> getNearbyBlockingObjects(int x, int y) {
 
+    int col = x ~/ 16;
+    int row = y ~/ 16;
+
+    List<GameObject> objs = new List<GameObject>();
+
+    for (int r = row - 5; r < row + 9; r++) {
+      if (this._blockingObjects[r] != null) {
+        for (int c = col - 5; c < col + 9; c++) {
+          if (this._blockingObjects[r][c] != null) {
+            objs.addAll(this._blockingObjects[r][c]);
+          }
+        }
+      }
+    }
+
+    objs.forEach((GameObject o) =>
+        window.console.log("Blocking object at ${o.x}x${o.y} named ${o.image.imgKey}"));
+
+    return objs;
+  }
 }
 
 class StaticGameObjectIterator implements Iterator<GameObject> {
@@ -72,18 +98,9 @@ class StaticGameObjectIterator implements Iterator<GameObject> {
 
   StaticGameObjectIterator(StaticGameObjectManager m) {
     this._objects = new List<GameObject>();
-    for (Map<int, Map<int, GameObject>> l in m._objects) {
-      for (int r_idx in l.keys) {
-        Map<int, GameObject> row = l[r_idx];
-        if (row == null) {
-          continue;
-        }
-        for (int g_idx in row.keys) {
-          GameObject g = row[g_idx];
-          if (g != null) {
-            this._objects.add(g);
-          }
-        }
+    for (List<GameObject> l in m._objects) {
+      for (GameObject g in l) {
+        this._objects.add(g);
       }
     }
     this._iterator = this._objects.iterator();

@@ -39,8 +39,8 @@ class EditableGameObjectManager implements GameObjectManager {
     return layer;
   }
 
-  List<GameObject> get blockingObjects {
-
+  List<GameObject> getNearbyBlockingObjects(int x, int y) {
+    return null;
   }
 
   void add(GameObject o) {

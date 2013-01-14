@@ -40,7 +40,9 @@ void _loop(num _) {
   player.tick();
 
   // Collision detection
-  for (GameObject o in currentRegion.staticObjects.blockingObjects /* objects.blockingObjects*/ ) {
+  for (GameObject o in
+      currentRegion.staticObjects.getNearbyBlockingObjects(player.x, player.y)
+      /* objects.blockingObjects*/ ) {
 
     int oX1 = o.x;
     int oX2 = o.x + o.width;
@@ -203,26 +205,3 @@ void main() {
 
 }
 
-
-
-/*
- *
-
-'cwabl', 64 * 5, 172, 64, 64, true
-'cwacl', 64 * 5, 128, 64, 64, true
-'cwatl', 64 * 5, 64, 64, 64, true
-
- objects.newLayer();
-["cwftc", 64 * 5, 0, 64, 64, true]
-["cwfbl", 64 * 4, 172, 64, 64, true]
-["cwfc1l", 64 * 4, 128, 64, 64, true]
-["cwfc2l", 64 * 4, 64, 64, 64, true]
-["cwftl", 64 * 4, 0, 64, 64, true]
-["cwftc", 64 * 6, 0, 64, 64, true]
-["cwatc", 64 * 6, 64, 64, 64, false]
-["cwacc", 64 * 6, 128, 64, 64, false]
-["cwatr", 64 * 7, 64, 64, 64, false]
-["cwacr", 64 * 7, 128, 64, 64, true]
-["cwabr", 64 * 7, 172, 64, 64, true]
-
-      */

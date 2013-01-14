@@ -32,7 +32,7 @@ class Region {
       this._staticObjects.newLayer();
       for (List objectData in layer) {
         Image i = assets.getImage(objectData[0]);
-        window.console.log("${objectData[0]}: ${i.toString()}");
+        window.console.log("${objectData[0]}: ${objectData[5]}");
         GameObject obj = new GenericObject(
             i,
             objectData[1],
