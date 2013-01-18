@@ -3,6 +3,7 @@ description:  A sample application
 author: Kyle Racette <kracette@gmail.com>
 version: 0.0.0
 
-#dependencies:
+dependencies:
+  browser: any
 #  js: any
 #  unittest: any

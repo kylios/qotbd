@@ -27,60 +27,53 @@ class AssetManager {
   // Called when _loading is true and the _loadQueue is empty
   var _loadedCallback = null;
 
-  AssetManager([this._loadedCallback = null]) {
+  Completer<AssetManager> _loadCompleter = null;
+
+  AssetManager() {
     this._images = new Map<String, Image>();
     this._json = new Map<String, JsonData>();
     this._loadQueue = new List<_LoadRequest>();
   }
 
-  void setLoadCallback(var loadedCallback) {
-    this._loadedCallback = loadedCallback;
-  }
-
   void addImage(String imgKey, String uri) {
 
     this._pendingLoads++;
-    this._images[imgKey] = new Image(uri, imgKey, this._imageLoadCallback);
+    this._images[imgKey] = new Image(uri, imgKey, this._loadCallback);
   }
 
   void addJsonData(String jsonKey, String uri) {
 
     this._pendingLoads++;
-    this._json[jsonKey] = new JsonData(uri, this._jsonLoadCallback);
+    this._json[jsonKey] = new JsonData(uri, this._loadCallback);
   }
 
-  void load() {
+  Future<AssetManager> load() {
+
+    if (this._loading == true) {
+      return this._loadCompleter.future;
+    } else {
+      this._loadCompleter = null;
+      this._loadCompleter = new Completer();
+    }
 
     this._loading = true;
     if (this._pendingLoads == 0) {
       this._loading = false;
-      if (this._loadedCallback != null) {
-        this._loadedCallback();
-      }
+      this._loadCompleter.complete(this);
+      return this._loadCompleter.future;
+    } else {
+      return this._loadCompleter.future;
     }
   }
 
-  void _imageLoadCallback(Image i) {
+  void _loadCallback(var _) {
 
     this._pendingLoads--;
     if (this._pendingLoads == 0 && this._loading) {
       this._loading = false;
 
-      // Invoke callback
-      if (this._loadedCallback != null) {
-        this._loadedCallback();
-      }
-    }
-  }
-
-  void _jsonLoadCallback(JsonData j) {
-
-    this._pendingLoads--;
-    if (this._pendingLoads == 0 && this._loading) {
-      this._loading = false;
-
-      if (this._loadedCallback != null) {
-        this._loadedCallback();
+      if (this._loadCompleter != null) {
+        this._loadCompleter.complete(this);
       }
     }
   }

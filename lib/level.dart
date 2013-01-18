@@ -7,6 +7,7 @@ import 'package:quest/tile.dart';
 import 'package:quest/game_object.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/game_data.dart';
+import 'package:quest/viewport.dart';
 
 part 'src/level/region.dart';
 part 'src/level/editable_region.dart';
@@ -16,50 +17,77 @@ class Level {
   String _name;
   String _uri;
   AssetManager _assets;
-  AssetManager _images;
+  AssetManager _tileImages;
+  AssetManager _objectImages;
   Map<String, Region> _regions;
-  var _loadCallback;
 
   Region _currentRegion;
 
-  Level(this._images, this._name, this._loadCallback) {
+  Completer<Level> _loadCompleter = null;
+
+  Level(this._tileImages, this._objectImages, this._name) {
+
+    window.console.log("constructing a new level, lol");
 
     String levelKey = 'level_${this._name}';
     String uri = 'game_data/quest/levels/${this._name}/level.json';
 
     this._regions = new Map<String, Region>();
-    this._assets = new AssetManager(this._assetLoadCallback);
+    this._assets = new AssetManager();
     this._assets.addJsonData(levelKey, uri);
-    this._assets.load();
+
   }
 
   Region get currentRegion => this._currentRegion;
 
-  void _assetLoadCallback() {
+  Future<Level> load() {
+
+    Completer loadCompleter = new Completer<Level>();
+
+    this._assets.load()
+      .chain(this._assetLoadCallback)
+      .chain(this._loadCompleteCallback)  // actually completes right away
+      .then((AssetManager _m) {
+        loadCompleter.complete(this);
+      });
+
+    return loadCompleter.future;
+  }
+
+  Future<AssetManager> _assetLoadCallback(AssetManager _m) {
+
+    window.console.log("_assetsLoadCallback");
 
     String levelKey = 'level_${this._name}';
-    Map levelData = this._assets.getJson(levelKey).data;
+    Map levelData = _m.getJson(levelKey).data;
 
     String startingRegion = levelData['starting_region'];
     List<String> regions = levelData['regions'];
 
-    this._assets.setLoadCallback(this._loadCompleteCallback);
     for (String rKey in regions) {
       this._regions[rKey] =
-          new Region(this._name, rKey, this._assets);
+        new Region(this._name, rKey, _m, this._tileImages, this._objectImages);
     }
-    this._assets.load();
 
     this._currentRegion = this._regions[startingRegion];
+
+    return _m.load();
   }
 
-  void _loadCompleteCallback() {
+  Future<AssetManager> _loadCompleteCallback(AssetManager _m) {
+
+    Completer<AssetManager> completer = new Completer<AssetManager>();
+
+    window.console.log("_loadCompleteCallback");
 
     // Pass the data back into the region objects
     for (String rKey in this._regions.keys) {
-      this._regions[rKey].onLoad(this._assets.getJson(rKey), this._images);
+      this._regions[rKey]
+        .onLoad(_m.getJson(rKey));
     }
 
-    this._loadCallback(this);
+    completer.complete(_m);
+
+    return completer.future;
   }
 }

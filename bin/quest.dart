@@ -13,6 +13,9 @@ import 'package:quest/game_object.dart';
 import 'package:quest/level.dart';
 
 Page p;
+CanvasManager mgr;
+CanvasDrawer drw;
+
 AssetManager assets;
 Viewport v;
 Hero player;
@@ -22,7 +25,7 @@ Level currentLevel;
 Map<String, Level> gameLevels;
 Region currentRegion;
 
-Map<String, String> imageURIMap = null;
+Map<String, Map<String, String>> imageURIMap = null;
 
 double fpsAverage = 0.0;
 num _renderTime = null;
@@ -97,8 +100,6 @@ void _loop(num _) {
   }
 
   // draw
-  CanvasDrawer drw = p.canvasDrawer;
-  CanvasManager mgr = p.canvasManager;
 
   drw.clear(mgr);
 
@@ -111,39 +112,22 @@ void _loop(num _) {
 
   v.setOffset(vOffsetX, vOffsetY);
 
-  int row = 0;
-  int col = 0;
-  for (List<String> levelRow in currentRegion.tiles) {
-    col = 0;
-    for (String imgKey in levelRow) {
-      if (imgKey != null) {
-        Tile t = new Tile(assets.getImage(imgKey));
-        v.drawImage(t.image, 64 * col, 64 * row, 64, 64);
-      }
-      col++;
-    }
-    row++;
-  }
+  currentRegion.drawTiles(v);
 
 
-
+  // TODO: player must be drawn in between object layers
   v.drawImage(playerImage, playerX, playerY, 64, 64);
 
-  for (GameObject o in currentRegion.staticObjects /* objects */) {
-    if (o != null) {
-      v.drawImage(o.image, o.x, o.y, o.width, o.height);
-    }
-  }
+  currentRegion.drawObjects(v);
 
   window.requestAnimationFrame(_loop);
 }
 
 
 
-void start() {
+void start(var _) {
 
   window.console.log('start called');
-
   _loop(0);
 
 }
@@ -152,21 +136,38 @@ void levelLoaded(Level l) {
   window.console.log("Level loaded");
   currentRegion = l.currentRegion;
 
+  p.addKeyboardListener(player);
+
+  window.console.log('loading all assets');
+  //assets.load().then(start);
+
+  start(null);
 }
 
-void gameLoaded() {
+void gameLoaded(AssetManager _m) {
+
+  window.console.log("gameLoaded");
 
   // Fetch the data
-  game = assets.getJson('game').data;
-  imageURIMap = assets.getJson('imageURIMap').data;
+  game = _m.getJson('game').data;
+  imageURIMap = _m.getJson('imageURIMap').data;
 
-  // Set new callback to fire when new assets are loaded
-  assets.setLoadCallback(start);
+  AssetManager tileAssetsManager = new AssetManager();
+  AssetManager playerAssetsManager = new AssetManager();
+  AssetManager objectAssetsManager = new AssetManager();
 
   // Load images
-  for (String imgKey in imageURIMap.keys) {
-    String uri = imageURIMap[imgKey];
-    assets.addImage(imgKey, uri);
+  for (String imgKey in imageURIMap["tiles"].keys) {
+    String uri = imageURIMap["tiles"][imgKey];
+    tileAssetsManager.addImage(imgKey, uri);
+  }
+  for (String imgKey in imageURIMap["objects"].keys) {
+    String uri = imageURIMap["objects"][imgKey];
+    objectAssetsManager.addImage(imgKey, uri);
+  }
+  for (String imgKey in imageURIMap["player"].keys) {
+    String uri = imageURIMap["player"][imgKey];
+    playerAssetsManager.addImage(imgKey, uri);
   }
 
   // Load level file
@@ -175,33 +176,35 @@ void gameLoaded() {
     gameLevels[levelName] = null;
   }
 
-  gameLevels[game['levels'][0]] = new Level(assets, game['levels'][0], levelLoaded);
+  gameLevels[game['levels'][0]] = new Level(tileAssetsManager, objectAssetsManager, game['levels'][0]);
 
-  player = new Hero(assets, 640 ~/ 2 - 32, 256);
+  tileAssetsManager.load()
+    .chain((var _) => objectAssetsManager.load())
+    .chain((var _) => playerAssetsManager.load())
+    .then((AssetManager playerImages) {
 
-  p.addKeyboardListener(player);
-  window.console.log('loading all assets');
-  assets.load();
+      player = new Hero(playerImages, 640 ~/ 2 - 32, 256);
+      gameLevels[game['levels'][0]].load().then(levelLoaded);
+    });
+
 }
 
 
 void main() {
 
-  p = new Page();
-  p.manageCanvas(query('canvas'), 640, 480, false);
-  CanvasManager mgr = p.canvasManager;
-  CanvasDrawer drw = p.canvasDrawer;
-
-  drw.setBackground('black');
-
-  v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
-
-  assets = new AssetManager(gameLoaded);
+  assets = new AssetManager();
 
   // Load the image uri map
   assets.addJsonData('game', 'game_data/quest/game.json');
   assets.addJsonData('imageURIMap', 'game_data/quest/image_uri_map.json');
-  assets.load();
+  assets.load().then(gameLoaded);
 
+  p = new Page();
+  mgr = new CanvasManager(query('canvas'),
+      width: 640, height: 480, hidden: false);
+  drw = mgr.drawer;
+  drw.setBackground('black');
+
+  v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
 }
 

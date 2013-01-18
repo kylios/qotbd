@@ -11,7 +11,7 @@ class CanvasDrawer {
 
   CanvasRenderingContext2D _c;
 
-  CanvasDrawer(this._c) {
+  CanvasDrawer._fromManager(this._c) {
     this._c.lineWidth = 1;
     this._c.lineDashOffset = 0;
   }
