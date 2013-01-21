@@ -2,33 +2,18 @@ part of level;
 
 class Region {
 
-  String _levelName;
   String _regionName;
 
   AssetManager _tileImages;
   AssetManager _objectImages;
-  AssetManager _assets;
-
-  var _loadCallback;
 
   List<List<String>> _tiles;
   GameObjectManager _staticObjects;
 
-  Region(this._levelName, this._regionName,
-      this._assets, this._tileImages, this._objectImages) {
+  Region(this._tileImages, this._objectImages, this._regionName, Map data) {
 
     this._staticObjects = new StaticGameObjectManager();
-    this._assets.addJsonData(this._regionName,
-        'game_data/quest/levels/${this._levelName}/regions/${this._regionName}.json');
-  }
 
-  Region.fromEditable(this._levelName, this._regionName, this._assets){
-    this._staticObjects = new StaticGameObjectManager();
-  }
-
-  void onLoad(JsonData regionData) {
-
-    Map data = regionData.data;
     this._tiles = data['tiles'];
 
     List<List<List>> staticObjects = data['static_objects'];
@@ -36,7 +21,6 @@ class Region {
       this._staticObjects.newLayer();
       for (List objectData in layer) {
         Image i = this._objectImages.getImage(objectData[0]);
-        window.console.log("${objectData[0]}: ${objectData[5]}");
         GameObject obj = new GenericObject(
             i,
             objectData[1],
@@ -48,6 +32,10 @@ class Region {
         this._staticObjects.add(obj);
       }
     }
+  }
+
+  Region.fromEditable(this._regionName) {
+    this._staticObjects = new StaticGameObjectManager();
   }
 
   void drawTiles(Viewport v) {
