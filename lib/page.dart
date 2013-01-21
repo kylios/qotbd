@@ -30,7 +30,7 @@ class Page {
 
   void addKeyboardListener(KeyboardListener k) {
     //this._keyboardListeners.add(k);
-
+window.console.log(k);
     window.on.keyDown.add(k.onKeyDown);
     window.on.keyUp.add(k.onKeyUp);
     window.on.keyPress.add(k.onKeyPress);

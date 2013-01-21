@@ -84,8 +84,10 @@ class StaticGameObjectManager implements GameObjectManager {
       }
     }
 
+    /*
     objs.forEach((GameObject o) =>
         window.console.log("Blocking object at ${o.x}x${o.y} named ${o.image.imgKey}"));
+        */
 
     return objs;
   }

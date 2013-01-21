@@ -44,6 +44,8 @@
       "cfdbr": "img/castle_floor_dot_bottom_right.png",
       "cfdtl": "img/castle_floor_dot_top_left.png",
       "cfdtr": "img/castle_floor_dot_top_right.png"
+    },
+    "player": {
     }
 	}
 }

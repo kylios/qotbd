@@ -84,6 +84,7 @@ class QuestData {
   }
 
   void load() {
+    window.console.log("QuestData done loading");
     this._loaded = true;
     for (var cb in this._loadCallbacks) {
       if (cb != null) {

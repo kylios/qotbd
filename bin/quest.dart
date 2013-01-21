@@ -2,30 +2,38 @@ library quest;
 
 import 'dart:html';
 
+import 'package:quest/quest.dart';
 import 'package:quest/page.dart';
-import 'package:quest/assets.dart';
-import 'package:quest/tile.dart';
-import 'package:quest/player.dart';
-import 'package:quest/image_list.dart';
+//import 'package:quest/assets.dart';
+//import 'package:quest/tile.dart';
+//import 'package:quest/player.dart';
+//import 'package:quest/image_list.dart';
 import 'package:quest/game_data.dart';
 import 'package:quest/viewport.dart';
-import 'package:quest/game_object.dart';
-import 'package:quest/level.dart';
+//import 'package:quest/game_object.dart';
+//import 'package:quest/level.dart';
+
+final int TILE_WIDTH = 64;
+final int TILE_HEIGHT = 64;
+final int CANVAS_WIDTH = 640;
+final int CANVAS_HEIGHT = 480;
+
+Quest q;
 
 Page p;
 CanvasManager mgr;
 CanvasDrawer drw;
 
-AssetManager assets;
+//AssetManager assets;
 Viewport v;
-Hero player;
+//Hero player;
 //GameObjectManager objects;
-Map game;
-Level currentLevel;
-Map<String, Level> gameLevels;
-Region currentRegion;
+//Map game;
+//Level currentLevel;
+//Map<String, Level> gameLevels;
+//Region currentRegion;
 
-Map<String, Map<String, String>> imageURIMap = null;
+//Map<String, Map<String, String>> imageURIMap = null;
 
 double fpsAverage = 0.0;
 num _renderTime = null;
@@ -40,12 +48,14 @@ void _loop(num _) {
 
   _renderTime = time;
 
+  /*
   player.tick();
 
   // Collision detection
   for (GameObject o in
       currentRegion.staticObjects.getNearbyBlockingObjects(player.x, player.y)
-      /* objects.blockingObjects*/ ) {
+      // objects.blockingObjects
+      ) {
 
     int oX1 = o.x;
     int oX2 = o.x + o.width;
@@ -98,11 +108,17 @@ void _loop(num _) {
       //break;
     }
   }
+  */
 
   // draw
 
+  q.tick(null);
+
   drw.clear(mgr);
 
+  q.draw(v);
+
+  /*
   Image playerImage = player.getDrawImage();
   int playerX = player.x;
   int playerY = player.y;
@@ -120,6 +136,8 @@ void _loop(num _) {
 
   currentRegion.drawObjects(v);
 
+  */
+
   window.requestAnimationFrame(_loop);
 }
 
@@ -128,9 +146,12 @@ void _loop(num _) {
 void start(var _) {
 
   window.console.log('start called');
+
   _loop(0);
 
 }
+
+/*
 
 void levelLoaded(Level l) {
   window.console.log("Level loaded");
@@ -189,8 +210,35 @@ void gameLoaded(AssetManager _m) {
 
 }
 
+*/
+
 
 void main() {
+
+
+
+  p = new Page();
+  mgr = new CanvasManager(query('canvas'),
+      width: CANVAS_WIDTH, height: CANVAS_HEIGHT, hidden: false);
+  drw = mgr.drawer;
+  drw.setBackground('black');
+
+  v = new Viewport(drw,
+      CANVAS_WIDTH, CANVAS_HEIGHT,
+      TILE_WIDTH * 20, TILE_HEIGHT * 20,
+      true);
+
+  q = new Quest(p, start);
+  q.tileWidth = TILE_WIDTH;
+  q.tileHeight = TILE_HEIGHT;
+  q.canvasWidth = CANVAS_WIDTH;
+  q.canvasHeight = CANVAS_HEIGHT;
+
+  q.runWhenReady();
+
+
+
+  /*
 
   assets = new AssetManager();
 
@@ -199,12 +247,7 @@ void main() {
   assets.addJsonData('imageURIMap', 'game_data/quest/image_uri_map.json');
   assets.load().then(gameLoaded);
 
-  p = new Page();
-  mgr = new CanvasManager(query('canvas'),
-      width: 640, height: 480, hidden: false);
-  drw = mgr.drawer;
-  drw.setBackground('black');
 
-  v = new Viewport(drw, 640, 480, 64 * 20, 64 * 20, true);
+  */
 }
 

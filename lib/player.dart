@@ -85,8 +85,6 @@ class Player implements KeyboardListener {
 
       this._x += this._moveX * this._speed;
       this._y += this._moveY * this._speed;
-
-      window.console.log("(${this._x}, ${this._y})");
     }
   }
 
