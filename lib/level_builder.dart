@@ -7,11 +7,14 @@ import 'package:quest/assets.dart';
 import 'package:quest/level.dart';
 import 'package:quest/tile.dart';
 import 'package:quest/game_object.dart';
+import 'package:quest/game_events.dart';
 
 
 class LevelBuilder extends MouseListener {
 
   Page _page;
+  CanvasManager _mgr;
+  CanvasDrawer _drw;
   Viewport _viewport;
   AssetManager _imageList;
 
@@ -32,7 +35,8 @@ class LevelBuilder extends MouseListener {
 
   EditableRegion _region = null;
 
-  LevelBuilder(this._page, this._imageList) {
+  LevelBuilder(this._page, this._mgr, this._imageList) {
+    this._drw = this._mgr.drawer;
   }
 
   Image get currentImage => this._currentImage;
@@ -52,12 +56,12 @@ class LevelBuilder extends MouseListener {
   void start(String levelName, String regionName, int width, int height) {
 
     this._region = new EditableRegion(levelName, regionName, this._imageList);
-    this._page.canvasManager.addMouseListener(this);
-    this._viewport = new Viewport(this._page.canvasDrawer,
+    this._mgr.addMouseListener(this);
+    this._viewport = new Viewport(this._drw,
         640, 480, 64 * width, 64 * height, false);
 
     this.draw();
-    this._page.canvasManager.show();
+    this._mgr.show();
     // new level
     this._region.start(width, height);
   }
@@ -77,8 +81,8 @@ class LevelBuilder extends MouseListener {
   }
   void onMouseMove(MouseEvent e) {
 
-    int cursorX = e.clientX - this._page.canvasManager.offsetX;
-    int cursorY = e.clientY - this._page.canvasManager.offsetY;
+    int cursorX = e.clientX - this._mgr.offsetX;
+    int cursorY = e.clientY - this._mgr.offsetY;
 
     if (this._placeTiles) {
 
@@ -116,8 +120,8 @@ class LevelBuilder extends MouseListener {
     int offsetX = this._viewport.xOffset;
     int offsetY = this._viewport.yOffset;
 
-    int cursorX = e.clientX - this._page.canvasManager.offsetX;
-    int cursorY = e.clientY - this._page.canvasManager.offsetY;
+    int cursorX = e.clientX - this._mgr.offsetX;
+    int cursorY = e.clientY - this._mgr.offsetY;
 
     int x = cursorX + offsetX;
     int y = cursorY + offsetY;
@@ -149,8 +153,8 @@ class LevelBuilder extends MouseListener {
 
   void draw() {
 
-    CanvasDrawer d = this._page.canvasDrawer;
-    d.clear(this._page.canvasManager);
+    CanvasDrawer d = this._mgr.drawer;
+    d.clear(this._mgr);
 
     int row = 0;
     int col = 0;

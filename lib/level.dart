@@ -44,8 +44,8 @@ class Level implements QuestLoadable {
     this._regions = new Map<String, Region>();
 
     for (String r in regions.keys) {
-      Region reg = new Region(this._tileImages, this._objectImages, r,
-          regions[r]);
+      Region reg = new Region.inLevel(this,
+          this._tileImages, this._objectImages, r, regions[r]);
       this._regions[r] = reg;
     }
 

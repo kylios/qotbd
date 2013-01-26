@@ -5,10 +5,12 @@ import 'dart:html';
 import 'package:quest/assets.dart';
 import 'package:quest/game_interface.dart';
 
-part 'src/game_data/objects/generic_object.dart';
-part 'src/game_data/game_object_manager.dart';
-part 'src/game_data/static_game_object_manager.dart';
-part 'src/game_data/editable_game_object_manager.dart';
+part 'src/game_object/objects/generic_object.dart';
+part 'src/game_object/game_object_manager.dart';
+part 'src/game_object/static_game_object_manager.dart';
+part 'src/game_object/editable_game_object_manager.dart';
+part 'src/game_object/dynamic_game_object_manager.dart';
+
 
 abstract class GameObject implements Tickable {
 

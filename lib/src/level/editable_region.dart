@@ -10,7 +10,7 @@ class EditableRegion extends Region {
   GameObjectManager staticObjects;
 
   EditableRegion(String levelName, String regionName, AssetManager imageAssets)
-      : super.fromEditable(levelName, regionName, imageAssets) {
+      : super.fromEditable(levelName) {
     this._tiles = new List<List<String>>();
     this.staticObjects = new EditableGameObjectManager();
     this.staticObjects.newLayer();

@@ -7,7 +7,8 @@ class StaticGameObjectManager implements GameObjectManager {
   Map<int, Map<int, List<GameObject>>> _blockingObjects;
   int _currentLayer = 0;
 
-  // This data structure should hold a reference to all blocking objects in the
+  // List of each object at every layer.  Outer list is the layer, inner list
+  // are the objects
   List<List<GameObject>> _objects;
 
   StaticGameObjectManager() {

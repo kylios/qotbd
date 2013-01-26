@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:quest/image_list.dart';
 import 'package:quest/assets.dart';
 import 'package:quest/page.dart';
+import 'package:quest/game_events.dart';
 
 class Player implements KeyboardListener {
 

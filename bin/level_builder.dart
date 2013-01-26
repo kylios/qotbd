@@ -18,7 +18,7 @@ Viewport v;
 AssetManager assets;
 
 Map game;
-Map<String, String> imageURIMap;
+Map<String, Map<String, String>> imageURIMap;
 
 LevelBuilder builder;
 
@@ -55,14 +55,26 @@ void addImageToList(Image i, String imgKey, DivElement images) {
   images.nodes.add(newImg);
 }
 
-void start() {
+void start(AssetManager _m) {
 
-  for (String imgKey in imageURIMap.keys) {
+  for (String imgKey in imageURIMap['tiles'].keys) {
 
-    Image i = assets.getImage(imgKey);
+    Image i = _m.getImage(imgKey);
 
     addImageToList(i, imgKey, images);
   }
+  for (String imgKey in imageURIMap['objects'].keys) {
+
+    Image i = _m.getImage(imgKey);
+
+    addImageToList(i, imgKey, images);
+  }
+  /*for (String imgKey in imageURIMap['player'].keys) {
+
+    Image i = _m.getImage(imgKey);
+
+    addImageToList(i, imgKey, images);
+  }*/
 }
 
 void clickGo(MouseEvent e) {
@@ -90,11 +102,11 @@ void place(Event e) {
   }
 }
 
-void gameLoaded() {
+void gameLoaded(AssetManager _m) {
 
   // Fetch the data
-  game = assets.getJson('game').data;
-  imageURIMap = assets.getJson('imageURIMap').data;
+  game = _m.getJson('game').data;
+  imageURIMap = _m.getJson('imageURIMap').data;
 
   imagesElem = query('#images');
 
@@ -115,13 +127,21 @@ void gameLoaded() {
   });
 
   // Set new callback to fire when new assets are loaded
-  assets.setLoadCallback(start);
+  //assets.setLoadCallback(start);
 
   // Load images
-  for (String imgKey in imageURIMap.keys) {
-    String uri = imageURIMap[imgKey];
-    assets.addImage(imgKey, uri);
+  for (String imgKey in imageURIMap['tiles'].keys) {
+    String uri = imageURIMap['tiles'][imgKey];
+    _m.addImage(imgKey, uri);
   }
+  for (String imgKey in imageURIMap['objects'].keys) {
+    String uri = imageURIMap['objects'][imgKey];
+    _m.addImage(imgKey, uri);
+  }
+  /*for (String imgKey in imageURIMap['player'].keys) {
+    String uri = imageURIMap['player'][imgKey];
+    _m.addImage(imgKey, uri);
+  }*/
 
   /*
   // Load level file
@@ -133,18 +153,19 @@ void gameLoaded() {
   gameLevels[game['levels'][0]] = new Level(assets, game['levels'][0], levelLoaded);
   */
 
-  assets.load();
+  _m.load().then(start);
 }
 
 void main() {
 
   p = new Page();
-  p.manageCanvas(query('canvas'), 640, 480, true);
-  CanvasManager mgr = p.canvasManager;
-  CanvasDrawer drw = p.canvasDrawer;
+  //p.manageCanvas(query('canvas'), 640, 480, true);
+  CanvasManager mgr = new CanvasManager(query('canvas'),
+      width: 640, height: 480, hidden: true);
+  CanvasDrawer drw = mgr.drawer;
 
-  assets = new AssetManager(gameLoaded);
-  builder = new LevelBuilder(p, assets);
+  assets = new AssetManager();
+  builder = new LevelBuilder(p, mgr, assets);
   imageRecords = new List<ImageRecord>();
 
   drw.setBackground('black');
@@ -156,7 +177,7 @@ void main() {
 
   // Load the image uri map
   assets.addJsonData('game', 'game_data/quest/game.json');
-  assets.addJsonData('imageURIMap', 'game_data/quest/image_uri_map.json');
-  assets.load();
+  assets.addJsonData('imageURIMap', 'game_data/quest/builder/image_uri_map.json');
+  assets.load().then(gameLoaded);
 }
 

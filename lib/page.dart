@@ -4,14 +4,11 @@ import 'dart:html';
 import 'dart:math';
 
 import 'package:quest/assets.dart';
+import 'package:quest/game_events.dart';
 
 part 'src/page/input_controller.dart';
 part 'src/page/canvas/manager.dart';
 part 'src/page/canvas/drawer.dart';
-part 'src/page/game_events/event.dart';
-part 'src/page/game_events/event_handler.dart';
-part 'src/page/game_events/keyboard_listener.dart';
-part 'src/page/game_events/mouse_listener.dart';
 
 
 

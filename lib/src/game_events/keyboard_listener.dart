@@ -1,4 +1,4 @@
-part of page;
+part of game_events;
 
 abstract class KeyboardListener {
 

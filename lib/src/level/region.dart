@@ -2,6 +2,8 @@ part of level;
 
 class Region {
 
+  Level _level;
+
   String _regionName;
 
   AssetManager _tileImages;
@@ -10,7 +12,7 @@ class Region {
   List<List<String>> _tiles;
   GameObjectManager _staticObjects;
 
-  Region(this._tileImages, this._objectImages, this._regionName, Map data) {
+  Region.inLevel(this._level, this._tileImages, this._objectImages, this._regionName, Map data) {
 
     this._staticObjects = new StaticGameObjectManager();
 
@@ -34,9 +36,7 @@ class Region {
     }
   }
 
-  Region.fromEditable(this._regionName) {
-    this._staticObjects = new StaticGameObjectManager();
-  }
+  Region.fromEditable(this._regionName);
 
   void drawTiles(Viewport v) {
 
