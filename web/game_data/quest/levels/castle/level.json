@@ -46,6 +46,8 @@
       "cfdtr": "img/castle_floor_dot_top_right.png"
     },
     "player": {
+    },
+    "spritesheets":{
     }
 	}
 }

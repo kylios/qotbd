@@ -2,9 +2,10 @@ part of game_data;
 
 class Hero extends Player {
 
-  Hero(AssetManager assets, int x, int y) :
+  Hero(SpriteManager sprites, int x, int y) :
 
-    super(2, 3,
+    super(sprites.getSpriteSheet("knight1"), 2, 3)
+    /*
         new ImageList([
           assets.getImage('p_up1'),
           assets.getImage('p_up2'),
@@ -48,6 +49,7 @@ class Hero extends Player {
           assets.getImage('p_right8'),
           assets.getImage('p_right9')
         ]))
+        */
   {
     this.setPosition(x, y);
   }

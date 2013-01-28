@@ -58,6 +58,20 @@ class Viewport {
     this._offsetY = y;
   }
 
+  void drawSprite(Sprite s, int x, int y, int width, int height) {
+
+    if (x + width < this._offsetX || x > this._offsetX + this._viewWidth ||
+        y + height < this._offsetY || y > this._offsetY + this._viewHeight) {
+
+      return;
+    }
+
+    int drawX = x - this._offsetX;
+    int drawY = y - this._offsetY;
+
+    this._drawer.drawSprite(s, drawX, drawY, width, height);
+  }
+
   void drawImage(Image image, int x, int y, int width, int height) {
 
     if (x + width < this._offsetX || x > this._offsetX + this._viewWidth ||

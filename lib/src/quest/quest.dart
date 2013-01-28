@@ -39,7 +39,7 @@ class Quest {
   void _initGame(QuestData _data) {
 
     // TODO: initial player state should come from _data
-    this._player = new Hero(_data._player, 128, 0);
+    this._player = new Hero(_data._playerSprites, 128, 0);
     this._page.addKeyboardListener(this._player);
 
     List<String> levels = _data.levelNames;
@@ -140,7 +140,6 @@ class Quest {
   }
 
   void draw(Viewport v) {
-    Image playerImage = this._player.getDrawImage();
     int playerX = this._player.x;
     int playerY = this._player.y;
 
@@ -153,7 +152,9 @@ class Quest {
 
 
     // TODO: this._player must be drawn in between object layers
-    v.drawImage(playerImage, playerX, playerY, this.tileWidth, this.tileHeight);
+    Sprite playerSprite = this._player.getDrawSprite();
+    v.drawSprite(playerSprite,
+        playerX, playerY, this.tileWidth, this.tileHeight);
 
     this._currentRegion.drawObjects(v);
   }

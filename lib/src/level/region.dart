@@ -23,6 +23,7 @@ class Region {
       this._staticObjects.newLayer();
       for (List objectData in layer) {
         Image i = this._objectImages.getImage(objectData[0]);
+        //window.console.log("TEST: ${objectData[0]}: ${i}");
         GameObject obj = new GenericObject(
             i,
             objectData[1],
@@ -46,8 +47,8 @@ class Region {
       col = 0;
       for (String imgKey in levelRow) {
         if (imgKey != null) {
-          Tile t = new Tile(this._tileImages.getImage(imgKey));
-          v.drawImage(t.image, 64 * col, 64 * row, 64, 64);
+          v.drawImage(this._tileImages.getImage(imgKey),
+              64 * col, 64 * row, 64, 64);
         }
         col++;
       }

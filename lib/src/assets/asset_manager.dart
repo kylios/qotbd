@@ -37,6 +37,7 @@ class AssetManager {
 
   void addImage(String imgKey, String uri) {
 
+    //window.console.log("SET image [${imgKey}]");
     this._pendingLoads++;
     this._images[imgKey] = new Image(uri, imgKey, this._loadCallback);
   }
@@ -78,7 +79,9 @@ class AssetManager {
     }
   }
 
-  Image getImage(String imgKey) => this._images[imgKey];
+  Image getImage(String imgKey) {
+    return this._images[imgKey];
+  }
   JsonData getJson(String jsonKey) => this._json[jsonKey];
 
 }

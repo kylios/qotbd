@@ -3,6 +3,7 @@ library game_object;
 import 'dart:html';
 
 import 'package:quest/assets.dart';
+import 'package:quest/game_events.dart';
 import 'package:quest/game_interface.dart';
 
 part 'src/game_object/objects/generic_object.dart';

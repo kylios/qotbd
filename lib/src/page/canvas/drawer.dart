@@ -17,7 +17,21 @@ class CanvasDrawer {
   }
 
   void drawImage(Image i, int x, int y, int width, int height) {
-    this._c.drawImage(i.img, x, y, width, height);
+    if (i != null) {
+      this._c.drawImage(i.img, x, y, width, height);
+    } else {
+      window.console.log("WARNING: tried to draw image but it is null :'-(");
+    }
+  }
+
+  void drawSprite(Sprite s, int x, int y, int width, int height) {
+
+    int sx = s.xOffset;
+    int sy = s.yOffset;
+    int sw = s.width;
+    int sh = s.height;
+
+    this._c.drawImage(s.image.img, sx, sy, sw, sh, x, y, width, height);
   }
 
   void _drawDashedLine(int startX, int startY, int endX, int endY) {

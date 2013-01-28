@@ -1,45 +1,15 @@
 {
+  "spritesheets": {
+
+    "knight1": "img/player/knight1.png"
+
+  },
   "tiles": {
   },
 
   "player": {
 
-    "p_up1": "img/player/up1.png",
-    "p_up2": "img/player/up2.png",
-    "p_up3": "img/player/up3.png",
-    "p_up4": "img/player/up4.png",
-    "p_up5": "img/player/up5.png",
-    "p_up6": "img/player/up6.png",
-    "p_up7": "img/player/up7.png",
-    "p_up8": "img/player/up8.png",
-    "p_up9": "img/player/up9.png",
-    "p_down1": "img/player/down1.png",
-    "p_down2": "img/player/down2.png",
-    "p_down3": "img/player/down3.png",
-    "p_down4": "img/player/down4.png",
-    "p_down5": "img/player/down5.png",
-    "p_down6": "img/player/down6.png",
-    "p_down7": "img/player/down7.png",
-    "p_down8": "img/player/down8.png",
-    "p_down9": "img/player/down9.png",
-    "p_left1": "img/player/left1.png",
-    "p_left2": "img/player/left2.png",
-    "p_left3": "img/player/left3.png",
-    "p_left4": "img/player/left4.png",
-    "p_left5": "img/player/left5.png",
-    "p_left6": "img/player/left6.png",
-    "p_left7": "img/player/left7.png",
-    "p_left8": "img/player/left8.png",
-    "p_left9": "img/player/left9.png",
-    "p_right1": "img/player/right1.png",
-    "p_right2": "img/player/right2.png",
-    "p_right3": "img/player/right3.png",
-    "p_right4": "img/player/right4.png",
-    "p_right5": "img/player/right5.png",
-    "p_right6": "img/player/right6.png",
-    "p_right7": "img/player/right7.png",
-    "p_right8": "img/player/right8.png",
-    "p_right9": "img/player/right9.png"
+
   },
 
   "objects": {

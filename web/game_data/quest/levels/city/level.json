@@ -1,0 +1,55 @@
+{
+	"name": "City",
+	"regions":[
+		"desolate_alley"
+	],
+	"starting_region": "desolate_alley",
+	"image_uri_map":{
+	  "spritesheets": {
+      "building": "img/city/Building.png",
+      "sidewalk": "img/city/Sidewalk_dark.png",
+      "street": "img/city/Street.png"
+	  },
+    "objects": {
+      "cwbbc": "img/castle_wall_broken_bottom_center.png",
+      "cwsbc": "img/castle_wall_bottom_center.png",
+      "cwstc": "img/castle_wall_top_center.png",
+      "cwsrc": "img/castle_wall_roof_center.png",
+      "cwscc": "img/castle_wall_center_center.png",
+      "cwbcc": "img/castle_wall_broken_center_center.png",
+
+      "cwabl": "img/castle/castle_wall_arch_bottom_left.png",
+      "cwacl": "img/castle/castle_wall_arch_center_left.png",
+      "cwatl": "img/castle/castle_wall_arch_top_left.png",
+      "cwatc": "img/castle/castle_wall_arch_top_center.png",
+      "cwacc": "img/castle/castle_wall_arch_center_center_opengate.png",
+      "cwatr": "img/castle/castle_wall_arch_top_right.png",
+      "cwacr": "img/castle/castle_wall_arch_center_right.png",
+      "cwabr": "img/castle/castle_wall_arch_bottom_right.png",
+
+      "cwfbl": "img/castle/castle_wall_fold_bottom_left.png",
+      "cwfc1l": "img/castle/castle_wall_fold_center1_left.png",
+      "cwfc2l": "img/castle/castle_wall_fold_center2_left.png",
+      "cwftl": "img/castle/castle_wall_fold_top_left.png",
+      "cwftc": "img/castle/castle_wall_fold_top_center.png"
+    },
+    "tiles": {
+      "gsc": "img/grass.png",
+      "cfstl": "img/castle_floor_top_left.png",
+      "cfstr": "img/castle_floor_top_right.png",
+      "cfstc": "img/castle_floor_top_center.png",
+      "cfscl": "img/castle_floor_center_left.png",
+      "cfscr": "img/castle_floor_center_right.png",
+      "cfscc": "img/castle_floor_center_center.png",
+      "cfsbl": "img/castle_floor_bottom_left.png",
+      "cfsbr": "img/castle_floor_bottom_right.png",
+      "cfsbc": "img/castle_floor_bottom_center.png",
+      "cfdbl": "img/castle_floor_dot_bottom_left.png",
+      "cfdbr": "img/castle_floor_dot_bottom_right.png",
+      "cfdtl": "img/castle_floor_dot_top_left.png",
+      "cfdtr": "img/castle_floor_dot_top_right.png"
+    },
+    "player": {
+    }
+	}
+}

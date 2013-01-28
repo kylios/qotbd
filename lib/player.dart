@@ -13,6 +13,8 @@ class Player implements KeyboardListener {
   ImageList _leftImages;
   ImageList _rightImages;
 
+  SpriteSheet _sprites;
+
   int _x = 0;
   int _y = 0;
 
@@ -24,8 +26,8 @@ class Player implements KeyboardListener {
 
   Map<int, bool> _keysPressed;
 
-  Player(this._direction, this._speed,
-      this._upImages, this._downImages, this._leftImages, this._rightImages) {
+  Player(this._sprites, this._direction, this._speed) /*,
+      this._upImages, this._downImages, this._leftImages, this._rightImages) */{
 
     this._keysPressed = new Map<int, bool>();
 
@@ -47,6 +49,27 @@ class Player implements KeyboardListener {
     this._y = y;
   }
 
+  Sprite getDrawSprite() {
+    if (this._direction == 0) {       // up
+      List<int> frame = this._sprites.getAnimation("walk_up").getFrame();
+      return new Sprite(this._sprites.image,
+          frame[0], frame[1], frame[2], frame[3]);
+    } else if (this._direction == 1) {  // right
+      List<int> frame = this._sprites.getAnimation("walk_right").getFrame();
+      return new Sprite(this._sprites.image,
+          frame[0], frame[1], frame[2], frame[3]);
+    } else if (this._direction == 2) { // down
+      List<int> frame = this._sprites.getAnimation("walk_down").getFrame();
+      return new Sprite(this._sprites.image,
+          frame[0], frame[1], frame[2], frame[3]);
+    } else { // left
+      List<int> frame = this._sprites.getAnimation("walk_left").getFrame();
+      return new Sprite(this._sprites.image,
+          frame[0], frame[1], frame[2], frame[3]);
+    }
+  }
+
+  // DEPRECATED
   Image getDrawImage() {
     if (this._direction == 0) { // UP
       return this._upImages.getImage();
@@ -60,6 +83,8 @@ class Player implements KeyboardListener {
   }
 
   void draw(CanvasDrawer d) {
+    Sprite s = this.getDrawSprite();
+    /*
     if (this._direction == 0) { // UP
       d.drawImage(this._upImages.getImage(), this._x, this._y, 64, 64);
     } else if (this._direction == 1) { // RIGHT
@@ -69,19 +94,24 @@ class Player implements KeyboardListener {
     } else { // LEFT
       d.drawImage(this._leftImages.getImage(), this._x, this._y, 64, 64);
     }
+    */
   }
 
   void tick() {
 
     if (this._moveX != 0 || this._moveY != 0) {
       if (this._direction == 0) { // UP
-        this._upImages.tick();
+        this._sprites.getAnimation("walk_up").tick();
+        //this._upImages.tick();
       } else if (this._direction == 2) { // DOWN
-        this._downImages.tick();
+        this._sprites.getAnimation("walk_down").tick();
+        //this._downImages.tick();
       } else if (this._direction == 1) { // RIGHT
-        this._rightImages.tick();
+        this._sprites.getAnimation("walk_right").tick();
+        //this._rightImages.tick();
       } else if (this._direction == 3) { // LEFT
-        this._leftImages.tick();
+        this._sprites.getAnimation("walk_left").tick();
+        //this._leftImages.tick();
       }
 
       this._x += this._moveX * this._speed;
@@ -117,8 +147,8 @@ class Player implements KeyboardListener {
       this.moveDown();
     } else {
       this._moveY = 0;
-      this._upImages.reset();
-      this._downImages.reset();
+      this._sprites.getAnimation("walk_up").reset();
+      this._sprites.getAnimation("walk_down").reset();
     }
 
     if (this._keysPressed[37] == true) { // left
@@ -127,8 +157,8 @@ class Player implements KeyboardListener {
       this.moveRight();
     } else {
       this._moveX = 0;
-      this._leftImages.reset();
-      this._rightImages.reset();
+      this._sprites.getAnimation("walk_left").reset();
+      this._sprites.getAnimation("walk_right").reset();
     }
   }
 
